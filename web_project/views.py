@@ -16,3 +16,6 @@ def home(request):
 
 def about(request):
     return render(request, "web_project/about.html", data)
+
+def contact(request):
+    return render(request, "web_project/contact.html", data)
