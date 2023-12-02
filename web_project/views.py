@@ -1,8 +1,18 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
+data = {
+    "reasons_to_learn": [
+        {"reason": "Clean design"},
+        {"reason": "Python power"},
+        {"reason": "Community"},
+    ],
+}
+
+
 def home(request):
     return HttpResponse("Hello, Django!")
 
+
 def about(request):
-    return render(request, "web_project/about.html", {'about': ['About', 'about2']})
+    return render(request, "web_project/about.html", data)
