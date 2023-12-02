@@ -6,6 +6,7 @@ data = {
         {"reason": "Clean design"},
         {"reason": "Python power"},
         {"reason": "Community"},
+        {"reason": "Django is fun"},
     ],
 }
 
