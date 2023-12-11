@@ -21,3 +21,6 @@ def about(request):
 
 def contact(request):
     return render(request, "web_project/contact.html", "hello world")
+
+def contact(request):
+    return render(request, "web_project/contact.html", data)
