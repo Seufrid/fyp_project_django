@@ -13,14 +13,16 @@ data = {
 
 
 def home(request):
-    return HttpResponse("Hello, Django!")
-
+    return render(request, "home.html")
 
 def about(request):
-    return render(request, "web_project/about.html", data)
+    return render(request, "about.html")
 
 def contact(request):
-    return render(request, "web_project/contact.html", "hello world")
+    return render(request, "contact.html")
 
-def contact(request):
-    return render(request, "web_project/contact.html", data)
+def selftest(request):
+    return render(request, "selftest.html")
+
+def appointment(request):
+    return render(request, "appointment.html")
