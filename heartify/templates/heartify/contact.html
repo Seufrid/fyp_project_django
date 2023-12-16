@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
-    <title>Selftest</title>
+    <title>Contact Us</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link rel="icon" href="{% static 'img/favicon.ico' %}">
+    <link rel="icon" href="{% static 'heartify/img/favicon.ico' %}">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,15 +21,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
-    <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
-    <link href="{% static 'lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'heartify/lib/animate/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'heartify/lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'heartify/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'heartify/css/bootstrap.min.css' %}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'heartify/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'heartify/css/style-popup.css' %}" rel="stylesheet">
 </head>
 <body>
     <!-- Navbar Start -->
@@ -45,8 +45,8 @@
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a href="{% url 'home' %}" class="nav-item nav-link">Home</a>
                 <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
-                <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>
-                <a href="{% url 'selftest' %}" class="nav-item nav-link active">Selftest</a>
+                <a href="{% url 'contact' %}" class="nav-item nav-link active">Contact</a>
+                <a href="{% url 'selftest' %}" class="nav-item nav-link">Selftest</a>
             </div>
             <a href="{% url 'appointment' %}" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Appointment<i class="fa fa-arrow-right ms-3"></i></a>
         </div>
@@ -56,112 +56,88 @@
     <!-- Page Header Start -->
     <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
-            <h1 class="display-3 text-white mb-3 animated slideInDown">Selftest</h1>
+            <h1 class="display-3 text-white mb-3 animated slideInDown">Contact Us</h1>
             <nav aria-label="breadcrumb animated slideInDown">
                 <ol class="breadcrumb text-uppercase mb-0">
                     <li class="breadcrumb-item"><a class="text-white" href="{% url 'home' %}">Home</a></li>
-                    <li class="breadcrumb-item text-primary active" aria-current="page">Selftest</li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">Contact</li>
                 </ol>
             </nav>
         </div>
     </div>
     <!-- Page Header End -->
 
-
     <!-- Contact Start -->
     <div class="container-xxl py-5">
         <div class="container">
             <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="h-100 bg-light rounded d-flex align-items-center p-5">
+                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
+                            <i class="fa fa-map-marker-alt text-primary"></i>
+                        </div>
+                        <div class="ms-4">
+                            <p class="mb-2">Address</p>
+                            <h5 class="mb-0">Heartify, IIUM, Jalan Imam Malik, 53100, Selangor</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="h-100 bg-light rounded d-flex align-items-center p-5">
+                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
+                            <i class="fa fa-phone-alt text-primary"></i>
+                        </div>
+                        <div class="ms-4">
+                            <p class="mb-2">Call Us Now</p>
+                            <h5 class="mb-0">+601 1645 43572</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="h-100 bg-light rounded d-flex align-items-center p-5">
+                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
+                            <i class="fa fa-envelope-open text-primary"></i>
+                        </div>
+                        <div class="ms-4">
+                            <p class="mb-2">Mail Us Now</p>
+                            <h5 class="mb-0">heartifycontact@gmail.com</h5>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
                     <div class="bg-light rounded p-5">
                         <p class="d-inline-block border rounded-pill py-1 px-4">Contact Us</p>
                         <h1 class="mb-4">Have Any Query? Please Contact Us!</h1>
-                        <p class="mb-4">The contact form is currently inactive. Get a functional and working contact form with Ajax & PHP in a few minutes. Just copy and paste the files, add a little code and you're done. <a href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
-                        <form id="myForm" data-url="{% url 'selftest' %}">
+                        <p class="mb-4 text-justify">We value your feedback and inquiries. Whether you have a question, suggestion, or just want to say hello, we'd love to hear from you. Please use the form below to reach out to us, and we'll get back to you as soon as possible. Your input is essential to us as we strive to enhance your experience with our services. A copy will also be sent to your email!</a></p>
+                        <form method="post" action="{% url 'contact' %}" id="contact-form">
                             {% csrf_token %}
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="number" class="form-control" id="Age" name="Age" placeholder="Your Age" min="1" max="120" required>
-                                        <label for="Age">Your Age</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <select class="form-select border-0" style="height: 55px;" id="Age" name="Sex" required>
-                                        <option value="" disabled selected>Choose Sex</option>
-                                        <option value="1">Male</option>
-                                        <option value="0">Female</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <select class="form-select border-0" style="height: 55px;" id="ChestPainType" name="ChestPainType" required>
-                                        <option value="" disabled selected>Choose ChestPainType</option>
-                                        <option value="0">ASY</option>
-                                        <option value="1">NAP</option>
-                                        <option value="2">ATA</option>
-                                        <option value="3">TA</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="number" class="form-control" id="RestingBP" name="RestingBP" placeholder="Your RestingBP" min="0" max="250" required>
-                                        <label for="RestingBP">Your RestingBP</label>
+                                        <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                                        <label for="name">Your Name</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="number" class="form-control" id="Cholesterol" name="Cholesterol" placeholder="Your Cholesterol" min="1" max="1000" required>
-                                        <label for="Cholesterol">Your Cholesterol</label>
+                                        <input type="email" name="email" class="form-control" id="email" placeholder="Your Email" required>
+                                        <label for="email">Your Email</label>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <select class="form-select border-0" style="height: 55px;" id="FastingBS" name="FastingBS" required>
-                                        <option value="" disabled selected>Choose FastingBS</option>
-                                        <option value="1">1</option>
-                                        <option value="0">0</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <select class="form-select border-0" style="height: 55px;" id="RestingECG" name="RestingECG" required>
-                                        <option value="" disabled selected>Choose RestingECG</option>
-                                        <option value="0">Normal</option>
-                                        <option value="1">LVH</option>
-                                        <option value="2">ST</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="number" class="form-control" id="MaxHR" name="MaxHR" placeholder="Your MaxHR" min="1" max="200" required>
-                                        <label for="MaxHR">Your MaxHR</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <select class="form-select border-0" style="height: 55px;" id="ExerciseAngina" name="ExerciseAngina" required>
-                                        <option value="" disabled selected>Choose ExerciseAngina</option>
-                                        <option value="1">Yes</option>
-                                        <option value="0">No</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="number" class="form-control" id="Oldpeak" name="Oldpeak" placeholder="Your Oldpeak" min="-10" max="10" required>
-                                        <label for="MaxHR">Your Oldpeak</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <select class="form-select border-0" style="height: 55px;" id="STSlope" name="STSlope" required>
-                                        <option value="" disabled selected>Choose STSlope</option>
-                                        <option value="0">Flat</option>
-                                        <option value="1">Up</option>
-                                        <option value="2">Down</option>
-                                    </select>
                                 </div>
                                 <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
+                                    <div class="form-floating">
+                                        <input type="text" name="subject" class="form-control" id="subject" placeholder="Subject" required>
+                                        <label for="subject">Subject</label>
+                                    </div>
                                 </div>
-                                <div class="col-12" id="result">
-                                    <!-- <p class="text-success mt-3 mb-0">Your message has been sent successfully.</p> -->
-
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <textarea name="message" class="form-control" placeholder="Leave a message here" id="message" style="height: 100px" required></textarea>
+                                        <label for="message">Message</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary w-100 py-3" id="submit-btn">Send Message</button>
                                 </div>
                             </div>
                         </form>
@@ -179,7 +155,24 @@
         </div>
     </div>
     <!-- Contact End -->
-        
+    
+    <!-- Popup Modals -->
+    <div id="sending-modal" class="modal">
+        <div class="modal-content">
+            <div id="sending-message" class="success-message">
+                <p>Sending...</p>
+            </div>
+        </div>
+    </div>
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="success-message" class="success-message">
+                <p>Message sent successfully!</p>
+            </div>
+        </div>
+    </div>
+    <!-- Popup Modals End -->
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
@@ -235,25 +228,25 @@
     </div>
     <!-- Footer End -->
 
-    <!-- Back to Top -->
+    <!-- Back to Top Button -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'lib/wow/wow.min.js' %}"></script>
-    <script src="{% static 'lib/easing/easing.min.js' %}"></script>
-    <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
-    <script src="{% static 'lib/counterup/counterup.min.js' %}"></script>
-    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'lib/tempusdominus/js/moment.min.js' %}"></script>
-    <script src="{% static 'lib/tempusdominus/js/moment-timezone.min.js' %}"></script>
-    <script src="{% static 'lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+    <script src="{% static 'heartify/lib/wow/wow.min.js' %}"></script>
+    <script src="{% static 'heartify/lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'heartify/lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'heartify/lib/counterup/counterup.min.js' %}"></script>
+    <script src="{% static 'heartify/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'heartify/lib/tempusdominus/js/moment.min.js' %}"></script>
+    <script src="{% static 'heartify/lib/tempusdominus/js/moment-timezone.min.js' %}"></script>
+    <script src="{% static 'heartify/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js' %}"></script>    
 
-    <!-- Selftest Javascript -->
-    <script src="{% static 'js/selftest.js' %}"></script>
-    <!-- Page Javascript -->
-    <script src="{% static 'js/page.js' %}"></script>
+    <!-- Template Javascript -->
+    <script src="{% static 'heartify/js/main.js' %}"></script>
+
+    <!-- Popup Javascript -->
+    <script src="{% static 'heartify/js/contact-popup.js' %}"></script>
 </body>
-
 </html>

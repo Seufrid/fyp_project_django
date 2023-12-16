@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-vy6wwjk0_z6g&k(a6uot%8d)(d#9qtn5(_$dql*bpx^y2ut3*h'
+SECRET_KEY = 'django-insecure-9vl7(x57*2xz=crehqcypdkklu71k48$dqd*k)_e*v@xi=vs@x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -32,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # 'web_project',
+    'heartify',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -56,7 +55,7 @@ ROOT_URLCONF = 'web_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR/'web_project/templates'],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,15 +122,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_REDIRECT_URL = '/'
-
-# STATICFILES_DIRS should include the absolute path to the 'static' directory in your project.
-STATICFILES_DIRS = [os.path.join(BASE_DIR/"web_project", 'static')]
 
 # Email configuration for using Gmail as the email server (SMTP)
 EMAIL_BACKEND = ''
 EMAIL_HOST = ''
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = ''  # Replace with Gmail email address
+EMAIL_HOST_USER = ''  # Replace with your Gmail email address
 EMAIL_HOST_PASSWORD = ''  # Generate an app-specific password for security

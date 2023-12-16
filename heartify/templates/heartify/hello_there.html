@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Hello, Django</title>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'heartify/css/site.css' %}" />
+    </head>
+    <body>
+        <span class="message">Hello, there {{ name }}!</span>
+        <img src="{% static 'img/about-1.jpg' %}" alt="">
+    </body>
+</html>
