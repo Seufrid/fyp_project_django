@@ -133,5 +133,5 @@ EMAIL_BACKEND = ''
 EMAIL_HOST = ''
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = ''  # Replace with your Gmail email address
+EMAIL_HOST_USER = ''  # Replace with Gmail email address
 EMAIL_HOST_PASSWORD = ''  # Generate an app-specific password for security
