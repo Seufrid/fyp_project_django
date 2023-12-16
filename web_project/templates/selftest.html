@@ -80,34 +80,91 @@
                         <p class="d-inline-block border rounded-pill py-1 px-4">Contact Us</p>
                         <h1 class="mb-4">Have Any Query? Please Contact Us!</h1>
                         <p class="mb-4">The contact form is currently inactive. Get a functional and working contact form with Ajax & PHP in a few minutes. Just copy and paste the files, add a little code and you're done. <a href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
-                        <form>
+                        <form id="myForm" data-url="{% url 'selftest' %}">
+                            {% csrf_token %}
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="name" placeholder="Your Name">
-                                        <label for="name">Your Name</label>
+                                        <input type="number" class="form-control" id="Age" name="Age" placeholder="Your Age" min="1" max="120" required>
+                                        <label for="Age">Your Age</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select border-0" style="height: 55px;" id="Age" name="Sex" required>
+                                        <option value="" disabled selected>Choose Sex</option>
+                                        <option value="1">Male</option>
+                                        <option value="0">Female</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select border-0" style="height: 55px;" id="ChestPainType" name="ChestPainType" required>
+                                        <option value="" disabled selected>Choose ChestPainType</option>
+                                        <option value="0">ASY</option>
+                                        <option value="1">NAP</option>
+                                        <option value="2">ATA</option>
+                                        <option value="3">TA</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" id="RestingBP" name="RestingBP" placeholder="Your RestingBP" min="0" max="250" required>
+                                        <label for="RestingBP">Your RestingBP</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="email" class="form-control" id="email" placeholder="Your Email">
-                                        <label for="email">Your Email</label>
+                                        <input type="number" class="form-control" id="Cholesterol" name="Cholesterol" placeholder="Your Cholesterol" min="1" max="1000" required>
+                                        <label for="Cholesterol">Your Cholesterol</label>
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-md-6">
+                                    <select class="form-select border-0" style="height: 55px;" id="FastingBS" name="FastingBS" required>
+                                        <option value="" disabled selected>Choose FastingBS</option>
+                                        <option value="1">1</option>
+                                        <option value="0">0</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select border-0" style="height: 55px;" id="RestingECG" name="RestingECG" required>
+                                        <option value="" disabled selected>Choose RestingECG</option>
+                                        <option value="0">Normal</option>
+                                        <option value="1">LVH</option>
+                                        <option value="2">ST</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="subject" placeholder="Subject">
-                                        <label for="subject">Subject</label>
+                                        <input type="number" class="form-control" id="MaxHR" name="MaxHR" placeholder="Your MaxHR" min="1" max="200" required>
+                                        <label for="MaxHR">Your MaxHR</label>
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-md-6">
+                                    <select class="form-select border-0" style="height: 55px;" id="ExerciseAngina" name="ExerciseAngina" required>
+                                        <option value="" disabled selected>Choose ExerciseAngina</option>
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
                                     <div class="form-floating">
-                                        <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 100px"></textarea>
-                                        <label for="message">Message</label>
+                                        <input type="number" class="form-control" id="Oldpeak" name="Oldpeak" placeholder="Your Oldpeak" min="-10" max="10" required>
+                                        <label for="MaxHR">Your Oldpeak</label>
                                     </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select border-0" style="height: 55px;" id="STSlope" name="STSlope" required>
+                                        <option value="" disabled selected>Choose STSlope</option>
+                                        <option value="0">Flat</option>
+                                        <option value="1">Up</option>
+                                        <option value="2">Down</option>
+                                    </select>
                                 </div>
                                 <div class="col-12">
                                     <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
+                                </div>
+                                <div class="col-12" id="result">
+                                    <!-- <p class="text-success mt-3 mb-0">Your message has been sent successfully.</p> -->
+
                                 </div>
                             </div>
                         </form>
@@ -181,10 +238,8 @@
     </div>
     <!-- Footer End -->
 
-
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
-
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -198,8 +253,10 @@
     <script src="{% static 'lib/tempusdominus/js/moment-timezone.min.js' %}"></script>
     <script src="{% static 'lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js' %}"></script>
 
-    <!-- Template Javascript -->
-    <script src="{% static 'js/main.js' %}"></script>
+    <!-- Selftest Javascript -->
+    <script src="{% static 'js/selftest.js' %}"></script>
+    <!-- Page Javascript -->
+    <script src="{% static 'js/page.js' %}"></script>
 </body>
 
 </html>
