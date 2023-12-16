@@ -1,16 +1,7 @@
-from django.shortcuts import render, redirect
-from django.utils.timezone import datetime
-from django.http import HttpResponse
 import pickle
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.http import JsonResponse
 from django.core.mail import send_mail
-
-# def home(request):
-#     return HttpResponse("Hello, Django!")
-
-def hello(request):
-    return render(request,'heartify/hello_there.html')
 
 def home(request):
     return render(request, "heartify/home.html")
