@@ -127,3 +127,11 @@ LOGIN_REDIRECT_URL = '/'
 
 # STATICFILES_DIRS should include the absolute path to the 'static' directory in your project.
 STATICFILES_DIRS = [os.path.join(BASE_DIR/"web_project", 'static')]
+
+# Email configuration for using Gmail as the email server
+EMAIL_BACKEND = ''
+EMAIL_HOST = ''
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = ''  # Replace with your Gmail email address
+EMAIL_HOST_PASSWORD = ''  # Generate an app-specific password for security

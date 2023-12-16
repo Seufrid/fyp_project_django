@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <title>Contact Us</title>
@@ -31,51 +30,12 @@
 
     <!-- Template Stylesheet -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style-popup.css' %}" rel="stylesheet">
 </head>
-
 <body>
-    <!-- Spinner Start 
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-    <-- Spinner End -->
-
-
-    <!-- Topbar Start 
-    <div class="container-fluid bg-light p-0 wow fadeIn" data-wow-delay="0.1s">
-        <div class="row gx-0 d-none d-lg-flex">
-            <div class="col-lg-7 px-5 text-start">
-                <div class="h-100 d-inline-flex align-items-center py-3 me-4">
-                    <small class="fa fa-map-marker-alt text-primary me-2"></small>
-                    <small>123 Street, New York, USA</small>
-                </div>
-                <div class="h-100 d-inline-flex align-items-center py-3">
-                    <small class="far fa-clock text-primary me-2"></small>
-                    <small>Mon - Fri : 09.00 AM - 09.00 PM</small>
-                </div>
-            </div>
-            <div class="col-lg-5 px-5 text-end">
-                <div class="h-100 d-inline-flex align-items-center py-3 me-4">
-                    <small class="fa fa-phone-alt text-primary me-2"></small>
-                    <small>+012 345 6789</small>
-                </div>
-                <div class="h-100 d-inline-flex align-items-center">
-                    <a class="btn btn-sm-square rounded-circle bg-white text-primary me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-sm-square rounded-circle bg-white text-primary me-1" href=""><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-sm-square rounded-circle bg-white text-primary me-1" href=""><i class="fab fa-linkedin-in"></i></a>
-                    <a class="btn btn-sm-square rounded-circle bg-white text-primary me-0" href=""><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <-- Topbar End -->
-
-
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 wow fadeIn" data-wow-delay="0.1s">
-        <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <a href="{% url 'home' %}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
             <h1 class="m-0 text-primary"><i class="far fa-heart me-3"> Heartify</i></h1>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -93,7 +53,6 @@
     </nav>
     <!-- Navbar End -->
 
-
     <!-- Page Header Start -->
     <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
@@ -108,7 +67,6 @@
     </div>
     <!-- Page Header End -->
 
-
     <!-- Contact Start -->
     <div class="container-xxl py-5">
         <div class="container">
@@ -120,7 +78,7 @@
                         </div>
                         <div class="ms-4">
                             <p class="mb-2">Address</p>
-                            <h5 class="mb-0">123 Street, New York, USA</h5>
+                            <h5 class="mb-0">Heartify, IIUM, Jalan Imam Malik, 53100, Selangor</h5>
                         </div>
                     </div>
                 </div>
@@ -131,7 +89,7 @@
                         </div>
                         <div class="ms-4">
                             <p class="mb-2">Call Us Now</p>
-                            <h5 class="mb-0">+012 345 6789</h5>
+                            <h5 class="mb-0">+601 1645 43572</h5>
                         </div>
                     </div>
                 </div>
@@ -142,7 +100,7 @@
                         </div>
                         <div class="ms-4">
                             <p class="mb-2">Mail Us Now</p>
-                            <h5 class="mb-0">info@example.com</h5>
+                            <h5 class="mb-0">heartifycontact@gmail.com</h5>
                         </div>
                     </div>
                 </div>
@@ -150,35 +108,36 @@
                     <div class="bg-light rounded p-5">
                         <p class="d-inline-block border rounded-pill py-1 px-4">Contact Us</p>
                         <h1 class="mb-4">Have Any Query? Please Contact Us!</h1>
-                        <p class="mb-4">The contact form is currently inactive. Get a functional and working contact form with Ajax & PHP in a few minutes. Just copy and paste the files, add a little code and you're done. <a href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
-                        <form>
+                        <p class="mb-4 text-justify">We value your feedback and inquiries. Whether you have a question, suggestion, or just want to say hello, we'd love to hear from you. Please use the form below to reach out to us, and we'll get back to you as soon as possible. Your input is essential to us as we strive to enhance your experience with our services. A copy will also be sent to your email!</a></p>
+                        <form method="post" action="{% url 'contact' %}" id="contact-form">
+                            {% csrf_token %}
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="name" placeholder="Your Name">
+                                        <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
                                         <label for="name">Your Name</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="email" class="form-control" id="email" placeholder="Your Email">
+                                        <input type="email" name="email" class="form-control" id="email" placeholder="Your Email" required>
                                         <label for="email">Your Email</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="subject" placeholder="Subject">
+                                        <input type="text" name="subject" class="form-control" id="subject" placeholder="Subject" required>
                                         <label for="subject">Subject</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
-                                        <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 100px"></textarea>
+                                        <textarea name="message" class="form-control" placeholder="Leave a message here" id="message" style="height: 100px" required></textarea>
                                         <label for="message">Message</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
+                                    <button type="submit" class="btn btn-primary w-100 py-3" id="submit-btn">Send Message</button>
                                 </div>
                             </div>
                         </form>
@@ -196,7 +155,24 @@
         </div>
     </div>
     <!-- Contact End -->
-
+    
+    <!-- Popup Modals -->
+    <div id="sending-modal" class="modal">
+        <div class="modal-content">
+            <div id="sending-message" class="success-message">
+                <p>Sending...</p>
+            </div>
+        </div>
+    </div>
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="success-message" class="success-message">
+                <p>Message sent successfully!</p>
+            </div>
+        </div>
+    </div>
+    <!-- Popup Modals End -->
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
@@ -252,10 +228,8 @@
     </div>
     <!-- Footer End -->
 
-
-    <!-- Back to Top -->
+    <!-- Back to Top Button -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
-
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -267,10 +241,12 @@
     <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
     <script src="{% static 'lib/tempusdominus/js/moment.min.js' %}"></script>
     <script src="{% static 'lib/tempusdominus/js/moment-timezone.min.js' %}"></script>
-    <script src="{% static 'lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+    <script src="{% static 'lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js' %}"></script>    
 
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js' %}"></script>
-</body>
 
+    <!-- Popup Javascript -->
+    <script src="{% static 'js/contact-popup.js' %}"></script>
+</body>
 </html>

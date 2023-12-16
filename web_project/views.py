@@ -1,6 +1,7 @@
 import pickle
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.core.mail import send_mail
 
 def home(request):
     return render(request, "home.html")
@@ -9,6 +10,29 @@ def about(request):
     return render(request, "about.html")
 
 def contact(request):
+    if request.method == 'POST':
+        name = request.POST.get('name', '')
+        email = request.POST.get('email', '')
+        subject = request.POST.get('subject', '')
+        message = request.POST.get('message', '')
+
+        # Customize the email content and recipient as needed
+        email_content = f"Name: {name}\nEmail: {email}\nSubject: {subject}\n\n{message}"
+        recipient_email = 'usamaabdul11@gmail.com'
+
+        send_mail(
+            subject='Contact Form Submission',
+            message=email_content,
+            from_email=email,
+            recipient_list=[recipient_email, email],
+            fail_silently=False,
+        )
+
+        # Return a JSON response indicating success
+        response_data = {'success': True}
+        return JsonResponse(response_data)
+
+    # If not a POST request, render the contact page
     return render(request, "contact.html")
 
 def selftest(request):
