@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             document.querySelector('#result').textContent = '';
             var percentage = (data.result * 100).toFixed(0);
-            document.querySelector('#result').textContent += "Chance of heart failure = " + percentage + '%';
+            document.querySelector('#result').textContent += "Heart Failure Chance= " + percentage + '%';
         });
     });
 });

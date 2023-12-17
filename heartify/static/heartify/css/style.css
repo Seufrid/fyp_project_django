@@ -5,6 +5,8 @@
     --dark: #1B2C51;
 }
 
+
+
 .fw-medium {
     font-weight: 500 !important;
 }
@@ -235,7 +237,7 @@
 }
 
 .page-header {
-    background: url(../img/header-page.jpg) top center no-repeat;
+    background: url(../img/banner.jpg) top center no-repeat;
     background-size: cover;
     text-shadow: 0 0 30px rgba(0, 0, 0, .1);
 }
@@ -292,6 +294,12 @@
 @media (min-width: 1400px) {
     .feature-text  {
         padding-left: calc(((100% - 1320px) / 2) + .75rem);
+    }
+}
+
+@media (min-width: 1400px) {
+    .feature-text-right  {
+        padding-left: calc(((100% - 1800px) / 2) + .75rem);
     }
 }
 
@@ -516,4 +524,8 @@
 
 .footer .copyright a:hover {
     color: var(--primary);
+}
+
+.text-justify {
+    text-align: justify;
 }

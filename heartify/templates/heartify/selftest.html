@@ -75,15 +75,15 @@
     </div>
     <!-- Page Header End -->
 
-    <!-- Contact Start -->
+    <!-- Selftest Form Start -->
     <div class="container-xxl py-5">
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
                     <div class="bg-light rounded p-5">
-                        <p class="d-inline-block border rounded-pill py-1 px-4">Contact Us</p>
-                        <h1 class="mb-4">Have Any Query? Please Contact Us!</h1>
-                        <p class="mb-4">The contact form is currently inactive. Get a functional and working contact form with Ajax & PHP in a few minutes. Just copy and paste the files, add a little code and you're done. <a href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
+                        <p class="d-inline-block border rounded-pill py-1 px-4">Selftest</p>
+                        <h1 class="mb-4">Selftest</h1>
+                        <p class="mb-4" style="text-align: justify;">Heart failure is a serious condition where the heart is unable to pump blood effectively, which can lead to various health complications. By answering the questions in this form, you will gain insights into your heart failure risk and receive a percentage change based on your responses. Remember that this self-test is not a substitute for professional medical advice, diagnosis, or treatment. If you have concerns about your heart health, consult with a healthcare provider for a comprehensive evaluation.</p>
                         <form id="myForm" data-url="{% url 'selftest' %}">
                             {% csrf_token %}
                             <div class="row g-3">
@@ -163,12 +163,14 @@
                                         <option value="2">Down</option>
                                     </select>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <textarea class="form-control border-0" id="result" placeholder="Your Results" style="resize: none;" disabled></textarea>
+                                        <label for="result">Your Results</label>
+                                    </div>
+                                </div>
                                 <div class="col-12">
                                     <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
-                                </div>
-                                <div class="col-12" id="result">
-                                    <!-- <p class="text-success mt-3 mb-0">Your message has been sent successfully.</p> -->
-
                                 </div>
                             </div>
                         </form>
@@ -176,65 +178,109 @@
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
                     <div class="h-100" style="min-height: 400px;">
-                        <iframe class="rounded w-100 h-100"
-                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15933.600495125194!2d101.73453!3d3.2503177!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc38c2f70795af%3A0xf808897bf1163a3!2sInternational%20Islamic%20University%20Malaysia!5e0!3m2!1sen!2smy!4v1702523193962!5m2!1sen!2smy"
-                        frameborder="0" allowfullscreen="" aria-hidden="false"
-                        tabindex="0"></iframe>
+                        <img class="rounded img-fluid" src="{% static 'heartify/img/8test1.jpg' %}" alt="namw">
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Contact End -->
+    <!-- Selftest Form End -->
+
+    <!-- Feature Start -->
+    <div class="container-fluid bg-primary overflow-hidden my-5 px-lg-0">
+        <div class="container feature px-lg-0">
+            <div class="row g-0 mx-lg-0">
+                <div class="col-lg-6 pe-lg-0 wow fadeIn" data-wow-delay="0.5s" style="min-height: 400px;">
+                    <div class="position-relative h-100">
+                        <img class="position-absolute img-fluid w-100 h-100" src="{% static 'heartify/img/selftest2.jpg' %}" style="object-fit: cover;" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6 feature-text-right py-5 wow fadeIn" data-wow-delay="0.1s">
+                    <div class="p-lg-5 ps-lg-0">
+                        <p class="d-inline-block border rounded-pill text-light py-1 px-4">Results</p>
+                        <h1 class="text-white mb-4">What Do The Results Mean?</h1>
+                        <p class="text-white mb-4 pb-2" style="text-align: justify;">At Heartify, our overarching goals center around elevating healthcare standards, fostering community well-being, and providing personalized, innovative solutions. We aspire to be a beacon of excellence in medical care, promoting a healthier, more empowered community through our commitment to compassion, education, and continuous improvement.</p>
+                        <p class="text-white mb-4 pb-2" style="text-align: justify;">At Heartify, our goals revolve around shaping a future where healthcare is not just a service but a transformative experience. We strive to continually innovate patient care, empower community wellness, and provide personalized health strategies. By maintaining excellence in medical practices, fostering collaborative patient-doctor relationships, and leveraging technology, we aim to be at the forefront of a healthcare revolution.</p>
+                        <div class="row g-4">
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-light" style="width: 55px; height: 55px;">
+                                        <i class="fa fa-user-md text-primary"></i>
+                                    </div>
+                                    <div class="ms-4">
+                                        <p class="text-white mb-2">Innovative</p>
+                                        <h5 class="text-white mb-0">Patient Care</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-light" style="width: 55px; height: 55px;">
+                                        <i class="fa fa-check text-primary"></i>
+                                    </div>
+                                    <div class="ms-4">
+                                        <p class="text-white mb-2">Empower</p>
+                                        <h5 class="text-white mb-0">Community Wellness</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-light" style="width: 55px; height: 55px;">
+                                        <i class="fa fa-comment-medical text-primary"></i>
+                                    </div>
+                                    <div class="ms-4">
+                                        <p class="text-white mb-2">Personalized</p>
+                                        <h5 class="text-white mb-0">Health Strategies</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-light" style="width: 55px; height: 55px;">
+                                        <i class="fa fa-medkit text-primary"></i>
+                                    </div>
+                                    <div class="ms-4">
+                                        <p class="text-white mb-2">Excellent</p>
+                                        <h5 class="text-white mb-0">Medical Practices</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <!-- Feature End -->
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-6 col-md-6">
                     <h5 class="text-light mb-4">Address</h5>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Heartify, IIUM, Jalan Imam Malik, 53100, Selangor</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+601 1645 43572</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>heartifycontact@gmail.com</p>
                     <div class="d-flex pt-2">
-                        <a class="btn btn-outline-light btn-social rounded-circle" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-light btn-social rounded-circle" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-light btn-social rounded-circle" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-light btn-social rounded-circle" href=""><i class="fab fa-linkedin-in"></i></a>
+                        <a class="btn btn-outline-light btn-social rounded-circle" href="https://twitter.com" target=”_blank”><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.facebook.com/" target=”_blank”><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.youtube.com/" target=”_blank”><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.linkedin.com/" target=”_blank”><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-4 col-md-6">
                     <h5 class="text-light mb-4">Services</h5>
-                    <a class="btn btn-link" href="">Cardiology</a>
-                    <a class="btn btn-link" href="">Pulmonary</a>
-                    <a class="btn btn-link" href="">Neurology</a>
-                    <a class="btn btn-link" href="">Orthopedics</a>
-                    <a class="btn btn-link" href="">Laboratory</a>
+                    <a class="btn btn-link" href="{% url 'about' %}">Cardiology</a>
                 </div>
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-2 col-md-6">
                     <h5 class="text-light mb-4">Quick Links</h5>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Contact Us</a>
-                    <a class="btn btn-link" href="">Our Services</a>
-                    <a class="btn btn-link" href="">Terms & Condition</a>
-                    <a class="btn btn-link" href="">Support</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="text-light mb-4">Newsletter</h5>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="copyright">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="#">Heartify</a>, All Right Reserved.
-                    </div>
+                    <a class="btn btn-link" href="{% url 'about' %}">About Us</a>
+                    <a class="btn btn-link" href="{% url 'contact' %}">Contact Us</a>
+                    <a class="btn btn-link" href="{% url 'selftest' %}">Selftest</a>
+                    <a class="btn btn-link" href="{% url 'appointment' %}">Appointment</a>
                 </div>
             </div>
         </div>

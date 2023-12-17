@@ -15,7 +15,7 @@ class Appointment(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     date = models.DateField()
     time = models.TimeField()
-    problem_description = models.TextField()
+    problem_description = models.TextField(max_length=5000)
 
     def __str__(self):
         return self.name
@@ -24,7 +24,7 @@ class Contact(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
     subject = models.CharField(max_length=255)
-    message = models.TextField()
+    message = models.TextField(max_length=5000)
 
     def __str__(self):
         return f"{self.name} - {self.email} - {self.subject}"
