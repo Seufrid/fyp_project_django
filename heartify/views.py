@@ -1,10 +1,8 @@
-import pickle
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.core.mail import send_mail
 from .ml_utils import make_prediction
+from django.core.mail import send_mail
 from .models import Appointment, Doctor, Contact
-from django.views.decorators.csrf import csrf_exempt
 
 def home(request):
     return render(request, "heartify/home.html")
@@ -26,8 +24,9 @@ def contact(request):
 
             # Customize the email content and recipient as needed
             email_content = f"Name: {name}\nEmail: {email}\nSubject: {subject}\n\n{message}"
-            recipient_email = 'usamaabdul11@gmail.com'
+            recipient_email = 'heartifycontact@gmail.com'
 
+            # Send email to the recipient and the user
             send_mail(
                 subject='Contact Form Submission',
                 message=email_content,
@@ -36,7 +35,7 @@ def contact(request):
                 fail_silently=False,
             )
 
-            # Return a JSON response indicating success
+            # Return a JSON response indicating success or an error
             return JsonResponse({'status': 'success', 'message': 'Appointment booked successfully.'})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': 'Failed to book appointment. Please check the form and try again.', 'errors': str(e)})
@@ -57,14 +56,16 @@ def selftest(request):
         exercise_angina = int(request.POST['ExerciseAngina'])
         oldpeak = int(request.POST['Oldpeak'])
         st_slope = int(request.POST['STSlope'])
-
+        
+        # Make prediction and return result
         result = make_prediction(age, sex, chest_pain_type, resting_bp, cholesterol, fasting_bs, resting_ecg, max_hr, exercise_angina, oldpeak, st_slope)
 
+        # Return a JSON response with the prediction
         return JsonResponse({'result': result})
     else:
+        # If not a POST request, render the selftest page
         return render(request, "heartify/selftest.html")
 
-@csrf_exempt    
 def appointment(request):
     if request.method == 'POST':
         name = request.POST.get('name', '')
@@ -91,8 +92,9 @@ def appointment(request):
                 f"Time: {time}\n\n"
                 f"{problem_description}"
             )
-            recipient_email = 'usamaabdul11@gmail.com'
+            recipient_email = 'heartifycontact@gmail.com'
 
+            # Send email to the recipient and the user
             send_mail(
                 subject='Appointment Form Submission',
                 message=email_content,
@@ -100,13 +102,13 @@ def appointment(request):
                 recipient_list=[recipient_email, email],
                 fail_silently=False,
             )
+
+            # Return a JSON response indicating success or an error
             return JsonResponse({'status': 'success', 'message': 'Appointment booked successfully.'})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': 'Failed to book appointment. Please check the form and try again.', 'errors': str(e)})
     else:
+        # If not a POST request, render the appointment page
         response_data = {'status': 'error', 'message': 'Invalid request method.'}
         doctor_names = Doctor.objects.all()
         return render(request, "heartify/appointment.html", {'doctor_names': doctor_names, 'response_data': response_data})
-
-def test(request):
-    return render(request, "heartify/test.html")
