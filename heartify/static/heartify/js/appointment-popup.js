@@ -1,5 +1,5 @@
-// Contact page popup script
-document.getElementById('contact-form').addEventListener('submit', function (event) {
+// Appointment page popup script
+document.getElementById('appointmentForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
     // Show loading modal
@@ -33,6 +33,7 @@ document.getElementById('contact-form').addEventListener('submit', function (eve
             // Show error modal
             $('#errorModal').modal('show');
         }
+        
     });
 });
 

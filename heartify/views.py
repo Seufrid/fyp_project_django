@@ -2,6 +2,9 @@ import pickle
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.core.mail import send_mail
+from .ml_utils import make_prediction
+from .models import Appointment, Doctor, Contact
+from django.views.decorators.csrf import csrf_exempt
 
 def home(request):
     return render(request, "heartify/home.html")
@@ -16,21 +19,27 @@ def contact(request):
         subject = request.POST.get('subject', '')
         message = request.POST.get('message', '')
 
-        # Customize the email content and recipient as needed
-        email_content = f"Name: {name}\nEmail: {email}\nSubject: {subject}\n\n{message}"
-        recipient_email = 'usamaabdul11@gmail.com'
+        try:
+            # Save the contact message in the database
+            contact = Contact(name=name, email=email, subject=subject, message=message)
+            contact.save()
 
-        send_mail(
-            subject='Contact Form Submission',
-            message=email_content,
-            from_email=email,
-            recipient_list=[recipient_email, email],
-            fail_silently=False,
-        )
+            # Customize the email content and recipient as needed
+            email_content = f"Name: {name}\nEmail: {email}\nSubject: {subject}\n\n{message}"
+            recipient_email = 'usamaabdul11@gmail.com'
 
-        # Return a JSON response indicating success
-        response_data = {'success': True}
-        return JsonResponse(response_data)
+            send_mail(
+                subject='Contact Form Submission',
+                message=email_content,
+                from_email=email,
+                recipient_list=[recipient_email, email],
+                fail_silently=False,
+            )
+
+            # Return a JSON response indicating success
+            return JsonResponse({'status': 'success', 'message': 'Appointment booked successfully.'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': 'Failed to book appointment. Please check the form and try again.', 'errors': str(e)})
 
     # If not a POST request, render the contact page
     return render(request, "heartify/contact.html")
@@ -49,60 +58,55 @@ def selftest(request):
         oldpeak = int(request.POST['Oldpeak'])
         st_slope = int(request.POST['STSlope'])
 
-        model = pickle.load(open("heart_model.sav", "rb"))
-        prediction = model.predict_proba([[age, sex, chest_pain_type, resting_bp, cholesterol, fasting_bs, resting_ecg, max_hr, exercise_angina, oldpeak, st_slope]])
-        result = prediction[0][1]
+        result = make_prediction(age, sex, chest_pain_type, resting_bp, cholesterol, fasting_bs, resting_ecg, max_hr, exercise_angina, oldpeak, st_slope)
 
         return JsonResponse({'result': result})
     else:
         return render(request, "heartify/selftest.html")
-    
+
+@csrf_exempt    
 def appointment(request):
-    return render(request, "heartify/appointment.html")
-    
-# def appointment(request):
-#     if request.method == 'POST':
-#         # Retrieve form data from the request
-#         name = request.POST.get('name')
-#         email = request.POST.get('email')
-#         mobile = request.POST.get('mobile')
-#         doctor = request.POST.get('doctor')
-#         date = request.POST.get('date')
-#         time = request.POST.get('time')
-#         problem_description = request.POST.get('problem_description')
+    if request.method == 'POST':
+        name = request.POST.get('name', '')
+        email = request.POST.get('email', '')
+        mobile = request.POST.get('mobile', '')
+        doctor_name = request.POST.get('doctor', '')
+        date = request.POST.get('date', '')
+        time = request.POST.get('time', '')
+        problem_description = request.POST.get('problem_description', '')
 
-#         # Create an Appointment instance and save it to the database
-#         appointment = Appointment(
-#             name=name,
-#             email=email,
-#             mobile=mobile,
-#             doctor=doctor,
-#             date=date,
-#             time=time,
-#             problem_description=problem_description
-#         )
-#         appointment.save()
+        try:
+            # Save the appointment in the database
+            doctor = Doctor.objects.get(name=doctor_name)
+            appointment = Appointment(name=name, email=email, mobile=mobile, doctor=doctor, date=date, time=time, problem_description=problem_description)
+            appointment.save()
 
-#         return redirect('appointment.html')  # Redirect to a success page or URL
+            # Customize the email content and recipient as needed
+            email_content = (
+                f"Name: {name}\n"
+                f"Email: {email}\n"
+                f"Mobile: {mobile}\n"
+                f"Doctor: {doctor_name}\n"
+                f"Date: {date}\n"
+                f"Time: {time}\n\n"
+                f"{problem_description}"
+            )
+            recipient_email = 'usamaabdul11@gmail.com'
 
-#     return render(request, 'appointment.html')
-    
-# def appointment(request):
-#     if request.method == 'POST':
-#         form = AppointmentForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             response_data = {'status': 'success', 'message': 'Appointment booked successfully!'}
-#         else:
-#             response_data = {'status': 'error', 'errors': form.errors}
-        
-#         # Check for AJAX request using headers
-#         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-#             return JsonResponse(response_data)
-#     else:
-#         form = AppointmentForm()
-
-#     return render(request, 'appointment.html', {'form': form})
+            send_mail(
+                subject='Appointment Form Submission',
+                message=email_content,
+                from_email=email,
+                recipient_list=[recipient_email, email],
+                fail_silently=False,
+            )
+            return JsonResponse({'status': 'success', 'message': 'Appointment booked successfully.'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': 'Failed to book appointment. Please check the form and try again.', 'errors': str(e)})
+    else:
+        response_data = {'status': 'error', 'message': 'Invalid request method.'}
+        doctor_names = Doctor.objects.all()
+        return render(request, "heartify/appointment.html", {'doctor_names': doctor_names, 'response_data': response_data})
 
 def test(request):
     return render(request, "heartify/test.html")
