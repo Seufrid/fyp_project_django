@@ -2,7 +2,6 @@ from django.urls import path
 from heartify import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-
 urlpatterns = [
     path('', views.home),
     path('home/', views.home, name='home'),

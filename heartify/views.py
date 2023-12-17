@@ -112,3 +112,6 @@ def appointment(request):
         response_data = {'status': 'error', 'message': 'Invalid request method.'}
         doctor_names = Doctor.objects.all()
         return render(request, "heartify/appointment.html", {'doctor_names': doctor_names, 'response_data': response_data})
+    
+def custom_404(request, exception):
+    return render(request, 'heartify/404.html', status=404)
