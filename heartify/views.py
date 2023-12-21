@@ -1,3 +1,4 @@
+import numpy as np
 from django.shortcuts import render
 from django.http import JsonResponse
 from .ml_utils import make_prediction
@@ -12,10 +13,10 @@ def about(request):
 
 def contact(request):
     if request.method == 'POST':
-        name = request.POST.get('name', '')
-        email = request.POST.get('email', '')
-        subject = request.POST.get('subject', '')
-        message = request.POST.get('message', '')
+        name = request.POST.get('name', 'No Name')
+        email = request.POST.get('email', 'No Email')
+        subject = request.POST.get('subject', 'No Subject')
+        message = request.POST.get('message', 'No Message')
 
         try:
             # Save the contact message in the database
@@ -45,23 +46,62 @@ def contact(request):
 
 def selftest(request):
     if request.method == 'POST':
-        age = int(request.POST['Age'])
-        sex = int(request.POST['Sex'])
-        chest_pain_type = int(request.POST['ChestPainType'])
-        resting_bp = int(request.POST['RestingBP'])
-        cholesterol = int(request.POST['Cholesterol'])
-        fasting_bs = int(request.POST['FastingBS'])
-        resting_ecg = int(request.POST['RestingECG'])
-        max_hr = int(request.POST['MaxHR'])
-        exercise_angina = int(request.POST['ExerciseAngina'])
-        oldpeak = int(request.POST['Oldpeak'])
-        st_slope = int(request.POST['STSlope'])
+        age = int(request.POST.get('Age', 0))
+        sex = int(request.POST.get('Sex', 0))
+        chest_pain_type = int(request.POST.get('ChestPainType', 0))
+        resting_bp = int(request.POST.get('RestingBP', 0))
+        cholesterol = int(request.POST.get('Cholesterol', 0))
+        fasting_bs = int(request.POST.get('FastingBS', 0))
+        resting_ecg = int(request.POST.get('RestingECG', 0))
+        max_hr = int(request.POST.get('MaxHR', 0))
+        exercise_angina = int(request.POST.get('ExerciseAngina', 0))
+        oldpeak = int(request.POST.get('Oldpeak', 0))
+        st_slope = int(request.POST.get('STSlope', 0))
         
         # Make prediction and return result
-        result = make_prediction(age, sex, chest_pain_type, resting_bp, cholesterol, fasting_bs, resting_ecg, max_hr, exercise_angina, oldpeak, st_slope)
+        result, coefficients = make_prediction(age, sex, chest_pain_type, resting_bp, cholesterol, fasting_bs, resting_ecg, max_hr, exercise_angina, oldpeak, st_slope)
+
+        # Load SHAP feature names
+        shap_data = np.load("shap_values_unfiltered.npz", allow_pickle=True)
+        feature_names_list = shap_data['feature_names'].tolist()
+
+        # Average data for positive and negative outcomes (include all features)
+        avg_data_positive_outcome = {
+            'Age': 55.9, 
+            'Sex': 0.9,  # 0 for Female, 1 for Male
+            'ChestPainType': 1.8,  # 0: ATA, 1: NAP, 2: ASY, 3: TA
+            'RestingBP': 134.19,
+            'Cholesterol': 175.94,
+            'FastingBS': 0.33,
+            'RestingECG': 0.65,  # 0: Normal, 1: ST, 2: LVH
+            'MaxHR': 127.66,
+            'ExerciseAngina': 0.62,  # 0: No, 1: Yes
+            'Oldpeak': 1.27,
+            'ST_Slope': 0.94  # 0: Up, 1: Flat, 2: Down
+        }
+
+        avg_data_negative_outcome = {
+            'Age': 50.55,
+            'Sex': 0.65,  # 0 for Female, 1 for Male
+            'ChestPainType': 1.02,  # 0: ATA, 1: NAP, 2: ASY, 3: TA
+            'RestingBP': 130.18,
+            'Cholesterol': 227.12,
+            'FastingBS': 0.11,
+            'RestingECG': 0.55,  # 0: Normal, 1: ST, 2: LVH
+            'MaxHR': 148.15,
+            'ExerciseAngina': 0.13,  # 0: No, 1: Yes
+            'Oldpeak': 0.41,
+            'ST_Slope': 0.26  # 0: Up, 1: Flat, 2: Down
+        }
 
         # Return a JSON response with the prediction
-        return JsonResponse({'result': result})
+        return JsonResponse({
+            'result': result,
+            'feature_names': feature_names_list,
+            'coefficients': coefficients.tolist(),
+            'avg_positive': avg_data_positive_outcome,
+            'avg_negative': avg_data_negative_outcome
+        })
     else:
         # If not a POST request, render the selftest page
         return render(request, "heartify/selftest.html")

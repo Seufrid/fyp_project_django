@@ -10,4 +10,6 @@ def make_prediction(age, sex, chest_pain_type, resting_bp, cholesterol, fasting_
     # Extract the probability of the positive class (heart disease)
     result = prediction[0][1]
 
-    return result # Return the predicted probability
+    # Assuming a linear model, adjust according to your model type
+    coefficients = model.coef_[0]
+    return result, coefficients

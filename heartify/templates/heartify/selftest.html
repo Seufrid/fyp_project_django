@@ -33,6 +33,10 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Chart JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.0.2"></script>
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{% static 'heartify/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -103,9 +107,9 @@
                                 <div class="col-md-6">
                                     <select class="form-select border-0" style="height: 55px;" id="ChestPainType" name="ChestPainType" required>
                                         <option value="" disabled selected>Choose ChestPainType</option>
-                                        <option value="0">ASY</option>
+                                        <option value="2">ASY</option>
                                         <option value="1">NAP</option>
-                                        <option value="2">ATA</option>
+                                        <option value="0">ATA</option>
                                         <option value="3">TA</option>
                                     </select>
                                 </div>
@@ -132,8 +136,8 @@
                                     <select class="form-select border-0" style="height: 55px;" id="RestingECG" name="RestingECG" required>
                                         <option value="" disabled selected>Choose RestingECG</option>
                                         <option value="0">Normal</option>
-                                        <option value="1">LVH</option>
-                                        <option value="2">ST</option>
+                                        <option value="2">LVH</option>
+                                        <option value="1">ST</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6">
@@ -158,8 +162,8 @@
                                 <div class="col-md-6">
                                     <select class="form-select border-0" style="height: 55px;" id="STSlope" name="STSlope" required>
                                         <option value="" disabled selected>Choose STSlope</option>
-                                        <option value="0">Flat</option>
-                                        <option value="1">Up</option>
+                                        <option value="1">Flat</option>
+                                        <option value="0">Up</option>
                                         <option value="2">Down</option>
                                     </select>
                                 </div>
@@ -186,6 +190,43 @@
     </div>
     <!-- Selftest Form End -->
 
+    <!-- Progress Bar Start -->
+    <div id="progressBarContainer" class="container-xxl py-5" style="display:none;">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.05s" style="max-width: 600px;">
+            <p class="d-inline-block border rounded-pill py-1 px-4">Chart</p>
+            <h1>Risk Bar</h1>
+        </div>
+        <div class="container">
+            <canvas id="progressBarChart" width="400" height="100"></canvas> <!-- Adjust width and height as needed -->
+        </div>
+    </div>
+    <!-- Progress Bar End -->
+
+    <!-- Comparison Chart Start -->
+    <div id="chartContainer" class="container-xxl py-5" style="display:none;">
+        
+        <div class="container">
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.05s" style="max-width: 600px;">
+                <p class="d-inline-block border rounded-pill py-1 px-4">Chart</p>
+                <h1>Input Comparison</h1>
+            </div>
+            <canvas id="myComparisonChart" width="100" height="20"></canvas>
+        </div>
+    </div>
+    <!-- Comparison Chart End -->
+
+    <!-- Importance Chart Start -->
+    <div id="importanceChartContainer" class="container-xxl py-5" style="display:none;">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.05s" style="max-width: 600px;">
+            <p class="d-inline-block border rounded-pill py-1 px-4">Chart</p>
+            <h1>Variable Importance</h1>
+        </div>
+        <div class="container">
+            <canvas id="featureImportanceChart" width="400" height="500"></canvas>
+        </div>
+    </div>
+    <!-- Importance Chart End -->
+
     <!-- Feature Start -->
     <div class="container-fluid bg-primary overflow-hidden my-5 px-lg-0">
         <div class="container feature px-lg-0">
@@ -195,7 +236,7 @@
                         <img class="position-absolute img-fluid w-100 h-100" src="{% static 'heartify/img/selftest2.jpg' %}" style="object-fit: cover;" alt="">
                     </div>
                 </div>
-                <div class="col-lg-6 feature-text-right py-5 wow fadeIn" data-wow-delay="0.1s">
+                <div class="col-lg-6 feature-text py-5 wow fadeIn" data-wow-delay="0.1s">
                     <div class="p-lg-5 ps-lg-0">
                         <p class="d-inline-block border rounded-pill text-light py-1 px-4">Results</p>
                         <h1 class="text-white mb-4">What Do The Results Mean?</h1>
