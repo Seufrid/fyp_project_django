@@ -93,6 +93,18 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <div class="form-floating">
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Your Name"required>
+                                        <label for="name">Your Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" required>
+                                        <label for="email">Your Email</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
                                         <input type="number" class="form-control" id="Age" name="Age" placeholder="Your Age" min="1" max="120" required>
                                         <label for="Age">Your Age</label>
                                     </div>
@@ -219,13 +231,14 @@
     <div id="importanceChartContainer" class="container-xxl py-5" style="display:none;">
         <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.05s" style="max-width: 600px;">
             <p class="d-inline-block border rounded-pill py-1 px-4">Chart</p>
-            <h1>Variable Importance</h1>
+            <h1>Input Importance</h1>
         </div>
         <div class="container">
             <canvas id="featureImportanceChart" width="400" height="500"></canvas>
         </div>
     </div>
     <!-- Importance Chart End -->
+    
 
     <!-- Feature Start -->
     <div class="container-fluid bg-primary overflow-hidden my-5 px-lg-0">
@@ -242,16 +255,22 @@
                         <h1 class="text-white mb-4">What Do The Results Mean?</h1>
                         <p class="text-white mb-4 pb-2" style="text-align: justify;">Thank you for taking the time to complete our self-test for heart failure risk assessment. Based on the information you provided, we have analyzed the variables and identified their influence on the chance of heart failure. Here is the order of variables that affect heart failure chance the most, from most to least:</p>
                         <li class="text-white mb-4">ST Slope: Consult with your healthcare provider to understand and address any issues related to ST slope abnormalities.</li>
-                        <li class="text-white mb-4">Oldpeak: Engage in regular exercise and maintain a healthy lifestyle to improve your exercise capacity and reduce the risk associated with ST depression during exercise.</li>
-                        <li class="text-white mb-4">Adopt a heart-healthy diet, low in saturated fats and cholesterol, and consider medications if prescribed by your doctor.</li>
-                        <li class="text-white mb-4">Chest Pain Type: Seek medical advice to manage and treat chest pain symptoms appropriately.</li>
-                        <li class="text-white mb-4">Age: While age is a non-modifiable factor, adopting a healthy lifestyle becomes increasingly important as you age.</li>
-                        <li class="text-white mb-4">MaxHR: Engage in regular aerobic exercise to improve your maximum heart rate and cardiovascular fitness.</li>
                         <li class="text-white mb-4">Exercise Angina: Work with your healthcare provider to manage and control angina symptoms during exercise.</li>
-                        <li class="text-white mb-4">Resting Blood Pressure (RestingBP): Maintain a healthy blood pressure through lifestyle changes, including a balanced diet, regular exercise, and stress management.</li>
-                        <li class="text-white mb-4">Sex: Some risk factors may vary between genders, so ensure you are aware of any gender-specific considerations and discuss them with your healthcare provider.</li>
-                        <li class="text-white mb-4">Resting ECG: Follow up with your healthcare provider for any abnormal electrocardiogram findings.</li>
                         <li class="text-white mb-4">Fasting Blood Sugar (FastingBS): Control blood sugar levels through diet, exercise, and, if necessary, medications as advised by your healthcare provider.</li>
+                        <li class="text-white mb-4">Sex: Some risk factors may vary between genders, so ensure you are aware of any gender-specific considerations and discuss them with your healthcare provider.</li>
+                        <li class="text-white mb-4">Chest Pain Type: Seek medical advice to manage and treat chest pain symptoms appropriately.</li>
+                        <li class="text-white mb-4">Oldpeak: Engage in regular exercise and maintain a healthy lifestyle to improve your exercise capacity and reduce the risk associated with ST depression during exercise.</li>
+                        <li class="text-white mb-4">Resting ECG: Follow up with your healthcare provider for any abnormal electrocardiogram findings.</li>
+                        <li class="text-white mb-4">MaxHR: Engage in regular aerobic exercise to improve your maximum heart rate and cardiovascular fitness.</li>
+                        <li class="text-white mb-4">Cholesterol: Adopt a heart-healthy diet, low in saturated fats and cholesterol, and consider medications if prescribed by your doctor.</li>
+                        <li class="text-white mb-4">Resting Blood Pressure (RestingBP): Maintain a healthy blood pressure through lifestyle changes, including a balanced diet, regular exercise, and stress management.</li>
+                        <li class="text-white mb-4">Age: While age is a non-modifiable factor, adopting a healthy lifestyle becomes increasingly important as you age.</li>
+                        
+                        
+                        
+                        
+                        
+                        
                         <p class="text-white mb-4 pb-2" style="text-align: justify;">Keep in mind that a chance of below 10 means you are in good health, between 10-50 indicates the need to take action to reduce it, and above 50 strongly suggests consulting with a doctor for further evaluation. Remember, it's essential to consult with your healthcare provider before making any significant lifestyle changes or starting new medications. They can provide personalized guidance based on your individual health profile.</p>
                         <div class="row g-4">
                             <div class="col-6">

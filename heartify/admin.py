@@ -1,5 +1,7 @@
+from django.db import models
 from django.contrib import admin
-from .models import Appointment, Doctor, Contact
+from django.forms import Textarea
+from .models import Appointment, Doctor, Contact, SelfTestResult, PersonProfile
 
 # Register the Doctor model with the admin site
 @admin.register(Doctor)
@@ -9,12 +11,62 @@ class DoctorAdmin(admin.ModelAdmin):
 # Register the Appointment model with the admin site
 @admin.register(Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'mobile', 'doctor', 'date', 'time', 'problem_description')  # Display these fields in the admin list view
-    list_filter = ('doctor', 'date')  # Add filters for doctor and date in the admin list view
-    search_fields = ('name', 'email', 'doctor__name')  # Enable search by name, email, and doctor's name in the admin list view
+    list_display = ('get_name', 'get_email', 'date', 'time', 'problem_description')
+
+    def get_name(self, obj):
+        return obj.person_profile.name
+    get_name.admin_order_field = 'person_profile__name'  # Allows column order sorting
+    get_name.short_description = 'Name'  # Renames column head
+
+    def get_email(self, obj):
+        return obj.person_profile.email
+    get_email.admin_order_field = 'person_profile__email'  # Allows column order sorting
+    get_email.short_description = 'Email'  # Renames column head
 
 # Register the Contact model with the admin site
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'subject')  # Display these fields in the admin list view
-    search_fields = ('name', 'email', 'subject')  # Enable search by name, email, and subject in the admin list view
+    list_display = ('get_name', 'get_email', 'subject')
+
+    def get_name(self, obj):
+        return obj.person_profile.name
+    get_name.admin_order_field = 'person_profile__name'
+    get_name.short_description = 'Name'
+
+    def get_email(self, obj):
+        return obj.person_profile.email
+    get_email.admin_order_field = 'person_profile__email'
+    get_email.short_description = 'Email'
+
+
+# Register the SelfTestResult model with the admin site
+@admin.register(SelfTestResult)
+class SelfTestResultAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in SelfTestResult._meta.get_fields()]
+
+class AppointmentInline(admin.TabularInline):
+    model = Appointment
+    extra = 0
+
+    formfield_overrides = {
+        models.TextField: {'widget': Textarea(attrs={'rows': 8, 'cols': 17})},  # Adjust the size as needed
+    }
+
+class ContactInline(admin.TabularInline):
+    model = Contact
+    extra = 0
+
+    formfield_overrides = {
+        models.TextField: {'widget': Textarea(attrs={'rows': 8, 'cols': 20})},  # Adjust the size as needed
+    }
+
+class SelfTestResultInline(admin.TabularInline):
+    model = SelfTestResult
+    fields = ('age', 'sex', 'chest_pain_type', 'resting_bp', 'cholesterol', 'result')  # Just an example subset of fields
+    extra = 0
+
+
+@admin.register(PersonProfile)
+class PersonProfileAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email')
+    inlines = [AppointmentInline, ContactInline, SelfTestResultInline]

@@ -84,7 +84,7 @@ function createProgressBarChart(percentage) {
                             type: 'line',
                             mode: 'vertical',
                             scaleID: 'x',
-                            value: 70,
+                            value: 50,
                             borderColor: 'red',
                             borderWidth: 2,
                             label: {
@@ -98,7 +98,7 @@ function createProgressBarChart(percentage) {
                             type: 'line',
                             mode: 'vertical',
                             scaleID: 'x',
-                            value: 20,
+                            value: 10,
                             borderColor: 'green',
                             borderWidth: 2,
                             label: {
@@ -142,12 +142,12 @@ function createComparativeChart(userInput, avgPositive, avgNegative) {
         backgroundColor: 'rgba(54, 162, 235, 0.5)',
     };
     const positiveDataSet = {
-        label: 'Average for Heart Failure Positive Outcome',
+        label: 'Average for Heart Failure Positive',
         data: labels.map(label => avgPositive[label]),
         backgroundColor: 'rgba(75, 192, 192, 0.5)',
     };
     const negativeDataSet = {
-        label: 'Average for Hear Failure Negative Outcome',
+        label: 'Average for Hear Failure Negative',
         data: labels.map(label => avgNegative[label]),
         backgroundColor: 'rgba(153, 102, 255, 0.5)',
     };

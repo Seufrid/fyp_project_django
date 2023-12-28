@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .ml_utils import make_prediction
 from django.core.mail import send_mail
-from .models import Appointment, Doctor, Contact
+from .models import Appointment, Doctor, Contact, SelfTestResult, PersonProfile
 
 def home(request):
     return render(request, "heartify/home.html")
@@ -19,8 +19,11 @@ def contact(request):
         message = request.POST.get('message', 'No Message')
 
         try:
+            person_profile, created = PersonProfile.objects.get_or_create(
+                email=email, defaults={'name': name}
+            )
             # Save the contact message in the database
-            contact = Contact(name=name, email=email, subject=subject, message=message)
+            contact = Contact(person_profile=person_profile, name=name, email=email, subject=subject, message=message)
             contact.save()
 
             # Customize the email content and recipient as needed
@@ -46,6 +49,8 @@ def contact(request):
 
 def selftest(request):
     if request.method == 'POST':
+        name = request.POST.get('name', '')
+        email = request.POST.get('email', '')
         age = int(request.POST.get('Age', 0))
         sex = int(request.POST.get('Sex', 0))
         chest_pain_type = int(request.POST.get('ChestPainType', 0))
@@ -57,9 +62,44 @@ def selftest(request):
         exercise_angina = int(request.POST.get('ExerciseAngina', 0))
         oldpeak = int(request.POST.get('Oldpeak', 0))
         st_slope = int(request.POST.get('STSlope', 0))
+
+        # Get or create the PersonProfile instance
+        person_profile, created = PersonProfile.objects.get_or_create(
+            email=request.POST.get('email'), defaults={'name': request.POST.get('name')}
+        )
         
         # Make prediction and return result
         result, coefficients = make_prediction(age, sex, chest_pain_type, resting_bp, cholesterol, fasting_bs, resting_ecg, max_hr, exercise_angina, oldpeak, st_slope)
+
+        # Converting encoded values to human-readable strings
+        sex_str = "Male" if sex == 1 else "Female"
+        chest_pain_type_str = {0: "ATA", 1: "NAP", 2: "ASY", 3: "TA"}.get(chest_pain_type, "Unknown")
+        fasting_bs_str = "1" if fasting_bs == 1 else "0"
+        resting_ecg_str = {0: "Normal", 1: "ST", 2: "LVH"}.get(resting_ecg, "Unknown")
+        exercise_angina_str = "Yes" if exercise_angina == 1 else "No"
+        st_slope_str = {0: "Up", 1: "Flat", 2: "Down"}.get(st_slope, "Unknown")
+
+        # Create an instance of the SelfTestResult model
+        test_result = SelfTestResult(
+            person_profile=person_profile,
+            name=name,
+            email=email,
+            age=age,
+            sex=sex_str,
+            chest_pain_type=chest_pain_type_str,
+            resting_bp=resting_bp,
+            cholesterol=cholesterol,
+            fasting_bs=fasting_bs_str,
+            resting_ecg=resting_ecg_str,
+            max_hr=max_hr,
+            exercise_angina=exercise_angina_str,
+            oldpeak=oldpeak,
+            st_slope=st_slope_str,
+            result= round(result * 100)
+        )
+
+        # Save the instance to the database
+        test_result.save()
 
         # Load SHAP feature names
         shap_data = np.load("shap_values_unfiltered.npz", allow_pickle=True)
@@ -117,9 +157,13 @@ def appointment(request):
         problem_description = request.POST.get('problem_description', '')
 
         try:
+            # Get or create the PersonProfile instance
+            person_profile, created = PersonProfile.objects.get_or_create(
+                email=email, defaults={'name': name}
+            )
             # Save the appointment in the database
             doctor = Doctor.objects.get(name=doctor_name)
-            appointment = Appointment(name=name, email=email, mobile=mobile, doctor=doctor, date=date, time=time, problem_description=problem_description)
+            appointment = Appointment(person_profile=person_profile, name=name, email=email, mobile=mobile, doctor=doctor, date=date, time=time, problem_description=problem_description)
             appointment.save()
 
             # Customize the email content and recipient as needed
