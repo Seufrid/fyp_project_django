@@ -56,7 +56,9 @@
                 <a href="{% url 'contact' %}" class="nav-item nav-link active">Contact</a>
                 <a href="{% url 'selftest' %}" class="nav-item nav-link">Selftest</a>
             </div>
-            <a href="{% url 'appointment' %}" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Appointment<i class="fa fa-arrow-right ms-3"></i></a>
+            <div>
+                <a href="{% url 'appointment' %}" class="btn btn-primary rounded-0 w-100 py-4 px-lg-5">Appointment<i class="fa fa-arrow-right ms-3"></i></a>
+            </div>
         </div>
     </nav>
     <!-- Navbar End -->
@@ -247,8 +249,9 @@
     </div>
     <!-- Footer End -->
 
-    <!-- Back to Top Button -->
+    <!-- Back to Top Button Start -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+    <!-- Back to Top Button End -->
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
