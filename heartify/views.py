@@ -26,6 +26,7 @@ def contact(request):
             person_profile, created = PersonProfile.objects.get_or_create(
                 email=email, defaults={'name': name}
             )
+
             # Save the contact message in the database
             contact = Contact(person_profile=person_profile, name=name, email=email, subject=subject, message=message)
             contact.save()
@@ -54,8 +55,6 @@ def contact(request):
 def selftest(request):
     if request.method == 'POST':
         # Handle the self-test form submission
-        name = request.POST.get('name', '')
-        email = request.POST.get('email', '')
         age = int(request.POST.get('Age', 0))
         sex = int(request.POST.get('Sex', 0))
         chest_pain_type = int(request.POST.get('ChestPainType', 0))
@@ -87,8 +86,6 @@ def selftest(request):
         # Create an instance of the SelfTestResult model
         test_result = SelfTestResult(
             person_profile=person_profile,
-            name=name,
-            email=email,
             age=age,
             sex=sex_str,
             chest_pain_type=chest_pain_type_str,
@@ -135,6 +132,7 @@ def selftest(request):
             'ST_Slope': 0.26  # 0: Up, 1: Flat, 2: Down
         }
 
+        # Import feature importance data from JSON file
         with open('feature_importance.json', 'r') as f:
             feature_importance_data = json.load(f)
 
@@ -165,9 +163,17 @@ def appointment(request):
             person_profile, created = PersonProfile.objects.get_or_create(
                 email=email, defaults={'name': name}
             )
+            
             # Save the appointment in the database
             doctor = Doctor.objects.get(name=doctor_name)
-            appointment = Appointment(person_profile=person_profile, name=name, email=email, mobile=mobile, doctor=doctor, date=date, time=time, problem_description=problem_description)
+            appointment = Appointment(
+                person_profile=person_profile,
+                mobile=mobile,
+                doctor=doctor,
+                date=date,
+                time=time,
+                problem_description=problem_description
+            )
             appointment.save()
 
             # Customize the email content and recipient

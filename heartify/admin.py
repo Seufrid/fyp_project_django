@@ -6,7 +6,7 @@ from .models import Appointment, Doctor, Contact, SelfTestResult, PersonProfile
 # Register the Doctor model with the admin site
 @admin.register(Doctor)
 class DoctorAdmin(admin.ModelAdmin):
-    list_display = ('name',)  # Display the name of the doctor in the admin list view
+    list_display = ('name', 'doctor_id', 'specialisation')  # Display these fields in the admin list view
 
 # Register the Appointment model with the admin site
 @admin.register(Appointment)
@@ -20,8 +20,8 @@ class AppointmentAdmin(admin.ModelAdmin):
 
     def get_email(self, obj):
         return obj.person_profile.email
-    get_email.admin_order_field = 'person_profile__email'  # Allows column order sorting
-    get_email.short_description = 'Email'  # Renames column head
+    get_email.admin_order_field = 'person_profile__email' 
+    get_email.short_description = 'Email'  
 
 # Register the Contact model with the admin site
 @admin.register(Contact)
@@ -38,7 +38,6 @@ class ContactAdmin(admin.ModelAdmin):
     get_email.admin_order_field = 'person_profile__email'
     get_email.short_description = 'Email'
 
-
 # Register the SelfTestResult model with the admin site
 @admin.register(SelfTestResult)
 class SelfTestResultAdmin(admin.ModelAdmin):
@@ -49,7 +48,7 @@ class AppointmentInline(admin.TabularInline):
     extra = 0
 
     formfield_overrides = {
-        models.TextField: {'widget': Textarea(attrs={'rows': 8, 'cols': 17})},  # Adjust the size as needed
+        models.TextField: {'widget': Textarea(attrs={'rows': 8, 'cols': 17})},  
     }
 
 class ContactInline(admin.TabularInline):
@@ -57,14 +56,13 @@ class ContactInline(admin.TabularInline):
     extra = 0
 
     formfield_overrides = {
-        models.TextField: {'widget': Textarea(attrs={'rows': 8, 'cols': 20})},  # Adjust the size as needed
+        models.TextField: {'widget': Textarea(attrs={'rows': 8, 'cols': 20})},  
     }
 
 class SelfTestResultInline(admin.TabularInline):
     model = SelfTestResult
-    fields = ('age', 'sex', 'chest_pain_type', 'resting_bp', 'cholesterol', 'result')  # Just an example subset of fields
+    fields = ('age', 'sex', 'chest_pain_type', 'resting_bp', 'cholesterol', 'result')
     extra = 0
-
 
 @admin.register(PersonProfile)
 class PersonProfileAdmin(admin.ModelAdmin):

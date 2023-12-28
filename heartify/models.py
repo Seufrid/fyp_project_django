@@ -1,7 +1,4 @@
 from django.db import models
-from django.db.models import Count
-from django.dispatch import receiver
-from django.db.models.signals import post_delete
 
 class PersonProfile(models.Model):
     email = models.EmailField(unique=False)
@@ -24,8 +21,6 @@ class Doctor(models.Model):
 
 class Appointment(models.Model):
     person_profile = models.ForeignKey(PersonProfile, on_delete=models.CASCADE, related_name='appointments')
-    email = models.EmailField(unique=False)
-    name = models.CharField(max_length=255)
     mobile = models.CharField(max_length=20)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     date = models.DateField()
@@ -37,8 +32,6 @@ class Appointment(models.Model):
 
 class Contact(models.Model):
     person_profile = models.ForeignKey(PersonProfile, on_delete=models.CASCADE, related_name='contacts')
-    email = models.EmailField(unique=False)
-    name = models.CharField(max_length=255)
     subject = models.CharField(max_length=255)
     message = models.TextField(max_length=5000)
 
@@ -48,8 +41,6 @@ class Contact(models.Model):
 
 class SelfTestResult(models.Model):
     person_profile = models.ForeignKey(PersonProfile, on_delete=models.CASCADE, related_name='selftest_results')
-    email = models.EmailField(unique=False)
-    name = models.CharField(max_length=255)
     age = models.IntegerField()
     sex = models.CharField(max_length=10)  # Male or Female
     chest_pain_type = models.CharField(max_length=20)  # ATA, NAP, ASY, TA
@@ -64,10 +55,8 @@ class SelfTestResult(models.Model):
     result = models.FloatField()
 
     def __str__(self):
-        # You can include any fields you want in the string representation
         return f"{self.person_profile.name} - Age: {self.age}, Sex: {self.sex}"
 
     class Meta:
-        verbose_name = "SelfTest Result"
-        verbose_name_plural = "SelfTest Results"
-
+        verbose_name = "Self Tests"
+        verbose_name_plural = "Self Tests"
