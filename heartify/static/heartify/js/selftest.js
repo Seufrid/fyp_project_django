@@ -1,14 +1,13 @@
-// Using Fetch API to send data to the view then display the result in the HTML page
-var comparisonChart = null; // Global variable to hold the chart instance
+// Global variable to hold the chart instance
+let comparisonChart = null;
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Get form, URL, and chart containers
     const form = document.querySelector('#myForm');
     const url = form.dataset.url;
-    const chartContainer = document.getElementById('chartContainer');
 
     // Add a submit event listener to the form
-    form.addEventListener('submit', function(event) {
+    form.addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent the default form submission behavior
 
         // Get form data
@@ -19,42 +18,42 @@ document.addEventListener('DOMContentLoaded', function() {
             method: 'POST',
             body: formData,
         })
-        .then(response => response.json())
-        .then(data => {
-            // Clear the result element
-            const resultElement = document.querySelector('#result');
-            resultElement.textContent = '';
+            .then(response => response.json())
+            .then(data => {
+                // Clear the result element
+                const resultElement = document.querySelector('#result');
+                resultElement.textContent = '';
 
-            // Calculate and display the Heart Failure Chance percentage
-            const percentage = (data.result * 100).toFixed(0);
-            resultElement.textContent = `Heart Failure Chance = ${percentage}%`;
+                // Calculate and display the Heart Failure Chance percentage
+                const percentage = (data.result * 100).toFixed(0);
+                resultElement.textContent = `Heart Failure Chance = ${percentage}%`;
 
-            // Show the chart container
-            chartContainer.style.display = 'flex'; // Use 'flex' if you're using flexbox
+                // Show the progress bar container and feature importance chart container
+                document.getElementById('progressBarContainer').style.display = 'block';
+                document.getElementById('chartContainer').style.display = 'block';
+                document.getElementById('featureImportanceChartContainer').style.display = 'block';
 
-            // Show the progress bar container and feature importance chart container
-            document.getElementById('progressBarContainer').style.display = 'block';
-            document.getElementById('importanceChartContainer').style.display = 'block';
+                // Create the progress bar with the prediction percentage
+                createProgressBarChart(percentage);
 
-            // Create the progress bar with the prediction percentage
-            createProgressBarChart(percentage);
-            
-            // Update the comparative chart with new data
-            createComparativeChart(formData, data.avg_positive, data.avg_negative);
+                // Update the comparative chart with new data
+                createComparativeChart(formData, data.avg_positive, data.avg_negative);
 
-            // Create the feature importance chart
-            createFeatureImportanceChart(data.coefficients, data.feature_names);
-        });
+                // Create the feature importance chart
+                createFeatureImportanceChart(data.feature_importance);
+            });
     });
 });
 
 function createProgressBarChart(percentage) {
     const ctx = document.getElementById('progressBarChart').getContext('2d');
 
+    // Destroy the old chart instance if it exists
     if (window.progressBarChart instanceof Chart) {
-        window.progressBarChart.destroy(); // Destroy the old chart instance if it exists
+        window.progressBarChart.destroy();
     }
 
+    // Create a new progress bar chart
     window.progressBarChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -147,7 +146,7 @@ function createComparativeChart(userInput, avgPositive, avgNegative) {
         backgroundColor: 'rgba(75, 192, 192, 0.5)',
     };
     const negativeDataSet = {
-        label: 'Average for Hear Failure Negative',
+        label: 'Average for Heart Failure Negative',
         data: labels.map(label => avgNegative[label]),
         backgroundColor: 'rgba(153, 102, 255, 0.5)',
     };
@@ -169,58 +168,45 @@ function createComparativeChart(userInput, avgPositive, avgNegative) {
     });
 }
 
-function createFeatureImportanceChart(coefficients, featureNames) {
-    console.log('Coefficients:', coefficients); // Log the coefficients
-    console.log('Feature Names:', featureNames); // Log the feature names
+function createFeatureImportanceChart(featureImportanceData) {
+    // Transform the object into an array of [key, value] pairs and sort it by value in descending order
+    const sortedData = Object.entries(featureImportanceData).sort((a, b) => b[1] - a[1]);
 
-    const ctx = document.getElementById('featureImportanceChart').getContext('2d'); // Ensure your canvas has this id
+    // Split the sorted array into separate arrays for labels and data
+    const labels = sortedData.map(item => item[0]);
+    const dataValues = sortedData.map(item => item[1]);
 
-    if (window.featureImportanceChart instanceof Chart) {
-        window.featureImportanceChart.destroy(); // Destroy the old chart instance if it exists
-    }
+    // Get the context of the canvas element we want to select
+    const ctx = document.getElementById('featureImportanceChart').getContext('2d');
 
-    // Take the absolute value of the coefficients
-    const absoluteCoefficients = coefficients.map(coef => Math.abs(coef));
+    // Data for the chart
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: 'Input Importance',
+            data: dataValues,
+            backgroundColor: 'rgba(0, 123, 255, 0.5)',
+            borderColor: 'rgba(0, 123, 255, 1)',
+            borderWidth: 1,
+        }]
+    };
 
-    // Sort the features based on the absolute value of coefficients
-    const sortedFeatures = featureNames
-        .map((name, index) => ({ name, value: absoluteCoefficients[index] }))
-        .sort((a, b) => b.value - a.value);
-
-    const sortedCoefficients = sortedFeatures.map(feature => feature.value);
-    const sortedFeatureNames = sortedFeatures.map(feature => feature.name);
-
-    try {
-        // Create the feature importance chart
-        window.featureImportanceChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: sortedFeatureNames,
-                datasets: [
-                    {
-                        label: 'Variable Importance',
-                        data: sortedCoefficients,
-                        backgroundColor: 'rgba(0, 123, 255, 0.5)',
-                        borderColor: 'rgba(0, 123, 255, 1)',
-                        borderWidth: 1,
-                    },
-                ],
+    // Configuration of the chart
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            indexAxis: 'y', // Set horizontal bar chart
+            scales: {
+                x: {
+                    beginAtZero: true,
+                }
             },
-            options: {
-                indexAxis: 'y',
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                    },
-                },
-                legend: {
-                    display: true,
-                },
-                responsive: true,
-                maintainAspectRatio: false,
-            },
-        });
-    } catch (error) {
-        console.error('Error creating feature importance chart:', error);
-    }
+            responsive: true,
+            maintainAspectRatio: false,
+        }
+    };
+
+    // Create the chart
+    new Chart(ctx, config);
 }

@@ -1,4 +1,4 @@
-import numpy as np
+import json
 from django.shortcuts import render
 from django.http import JsonResponse
 from .ml_utils import make_prediction
@@ -6,19 +6,23 @@ from django.core.mail import send_mail
 from .models import Appointment, Doctor, Contact, SelfTestResult, PersonProfile
 
 def home(request):
+    # Render the home page
     return render(request, "heartify/home.html")
 
 def about(request):
+    # Render the about page
     return render(request, "heartify/about.html")
 
 def contact(request):
     if request.method == 'POST':
+        # Handle the contact form submission
         name = request.POST.get('name', 'No Name')
         email = request.POST.get('email', 'No Email')
         subject = request.POST.get('subject', 'No Subject')
         message = request.POST.get('message', 'No Message')
 
         try:
+            # Get or create a PersonProfile instance
             person_profile, created = PersonProfile.objects.get_or_create(
                 email=email, defaults={'name': name}
             )
@@ -26,7 +30,7 @@ def contact(request):
             contact = Contact(person_profile=person_profile, name=name, email=email, subject=subject, message=message)
             contact.save()
 
-            # Customize the email content and recipient as needed
+            # Customize the email content and recipient
             email_content = f"Name: {name}\nEmail: {email}\nSubject: {subject}\n\n{message}"
             recipient_email = 'heartifycontact@gmail.com'
 
@@ -40,15 +44,16 @@ def contact(request):
             )
 
             # Return a JSON response indicating success or an error
-            return JsonResponse({'status': 'success', 'message': 'Appointment booked successfully.'})
+            return JsonResponse({'status': 'success', 'message': 'Contact form submitted successfully.'})
         except Exception as e:
-            return JsonResponse({'status': 'error', 'message': 'Failed to book appointment. Please check the form and try again.', 'errors': str(e)})
+            return JsonResponse({'status': 'error', 'message': 'Failed to submit contact form. Please check the form and try again.', 'errors': str(e)})
 
     # If not a POST request, render the contact page
     return render(request, "heartify/contact.html")
 
 def selftest(request):
     if request.method == 'POST':
+        # Handle the self-test form submission
         name = request.POST.get('name', '')
         email = request.POST.get('email', '')
         age = int(request.POST.get('Age', 0))
@@ -69,7 +74,7 @@ def selftest(request):
         )
         
         # Make prediction and return result
-        result, coefficients = make_prediction(age, sex, chest_pain_type, resting_bp, cholesterol, fasting_bs, resting_ecg, max_hr, exercise_angina, oldpeak, st_slope)
+        result = make_prediction(age, sex, chest_pain_type, resting_bp, cholesterol, fasting_bs, resting_ecg, max_hr, exercise_angina, oldpeak, st_slope)
 
         # Converting encoded values to human-readable strings
         sex_str = "Male" if sex == 1 else "Female"
@@ -101,11 +106,7 @@ def selftest(request):
         # Save the instance to the database
         test_result.save()
 
-        # Load SHAP feature names
-        shap_data = np.load("shap_values_unfiltered.npz", allow_pickle=True)
-        feature_names_list = shap_data['feature_names'].tolist()
-
-        # Average data for positive and negative outcomes (include all features)
+        # Average data for positive and negative outcomes (all features included)
         avg_data_positive_outcome = {
             'Age': 55.9, 
             'Sex': 0.9,  # 0 for Female, 1 for Male
@@ -134,20 +135,23 @@ def selftest(request):
             'ST_Slope': 0.26  # 0: Up, 1: Flat, 2: Down
         }
 
+        with open('feature_importance.json', 'r') as f:
+            feature_importance_data = json.load(f)
+
         # Return a JSON response with the prediction
         return JsonResponse({
             'result': result,
-            'feature_names': feature_names_list,
-            'coefficients': coefficients.tolist(),
             'avg_positive': avg_data_positive_outcome,
-            'avg_negative': avg_data_negative_outcome
+            'avg_negative': avg_data_negative_outcome,
+            'feature_importance': feature_importance_data
         })
     else:
-        # If not a POST request, render the selftest page
+        # If not a POST request, render the self-test page
         return render(request, "heartify/selftest.html")
 
 def appointment(request):
     if request.method == 'POST':
+        # Handle the appointment booking form submission
         name = request.POST.get('name', '')
         email = request.POST.get('email', '')
         mobile = request.POST.get('mobile', '')
@@ -166,7 +170,7 @@ def appointment(request):
             appointment = Appointment(person_profile=person_profile, name=name, email=email, mobile=mobile, doctor=doctor, date=date, time=time, problem_description=problem_description)
             appointment.save()
 
-            # Customize the email content and recipient as needed
+            # Customize the email content and recipient
             email_content = (
                 f"Name: {name}\n"
                 f"Email: {email}\n"
@@ -190,7 +194,7 @@ def appointment(request):
             # Return a JSON response indicating success or an error
             return JsonResponse({'status': 'success', 'message': 'Appointment booked successfully.'})
         except Exception as e:
-            return JsonResponse({'status': 'error', 'message': 'Failed to book appointment. Please check the form and try again.', 'errors': str(e)})
+            return JsonResponse({'status': 'error', 'message': 'Failed to book an appointment. Please check the form and try again.', 'errors': str(e)})
     else:
         # If not a POST request, render the appointment page
         response_data = {'status': 'error', 'message': 'Invalid request method.'}
@@ -198,4 +202,5 @@ def appointment(request):
         return render(request, "heartify/appointment.html", {'doctor_names': doctor_names, 'response_data': response_data})
     
 def custom_404(request, exception):
+    # Custom 404 page
     return render(request, 'heartify/404.html', status=404)

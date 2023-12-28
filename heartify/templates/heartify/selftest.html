@@ -194,7 +194,7 @@
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
                     <div class="h-100" style="min-height: 400px;">
-                        <img class="rounded img-fluid" src="{% static 'heartify/img/8test1.jpg' %}" alt="namw">
+                        <img class="rounded img-fluid" src="{% static 'heartify/img/8test1.jpg' %}" alt="namw" style="height: 100%;">
                     </div>
                 </div>
             </div>
@@ -216,19 +216,16 @@
 
     <!-- Comparison Chart Start -->
     <div id="chartContainer" class="container-xxl py-5" style="display:none;">
-        
-        <div class="container">
-            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.05s" style="max-width: 600px;">
-                <p class="d-inline-block border rounded-pill py-1 px-4">Chart</p>
-                <h1>Input Comparison</h1>
-            </div>
-            <canvas id="myComparisonChart" width="100" height="20"></canvas>
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.05s" style="max-width: 600px;">
+            <p class="d-inline-block border rounded-pill py-1 px-4">Chart</p>
+            <h1>Input Comparison</h1>
         </div>
+        <canvas id="myComparisonChart" width="100" height="20"></canvas>
     </div>
     <!-- Comparison Chart End -->
-
+    
     <!-- Importance Chart Start -->
-    <div id="importanceChartContainer" class="container-xxl py-5" style="display:none;">
+    <div id="featureImportanceChartContainer" class="container-xxl py-5" style="display:none;">
         <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.05s" style="max-width: 600px;">
             <p class="d-inline-block border rounded-pill py-1 px-4">Chart</p>
             <h1>Input Importance</h1>
@@ -238,7 +235,6 @@
         </div>
     </div>
     <!-- Importance Chart End -->
-    
 
     <!-- Feature Start -->
     <div class="container-fluid bg-primary overflow-hidden my-5 px-lg-0">
@@ -253,25 +249,19 @@
                     <div class="p-lg-5 ps-lg-0">
                         <p class="d-inline-block border rounded-pill text-light py-1 px-4">Results</p>
                         <h1 class="text-white mb-4">What Do The Results Mean?</h1>
-                        <p class="text-white mb-4 pb-2" style="text-align: justify;">Thank you for taking the time to complete our self-test for heart failure risk assessment. Based on the information you provided, we have analyzed the variables and identified their influence on the chance of heart failure. Here is the order of variables that affect heart failure chance the most, from most to least:</p>
+                        <p class="text-white mb-4 pb-2" style="text-align: justify;">Thank you for taking the time to complete our self-test for heart failure risk assessment. Based on the information you provided, we have analyzed the variables and identified their influence on the chance of heart failure. You can see how important each feature is in chart 3 ranked from highest to lowest. Here is each variable explained, in the order of variables that affect heart failure chance, from highest affect to the least:</p>
                         <li class="text-white mb-4">ST Slope: Consult with your healthcare provider to understand and address any issues related to ST slope abnormalities.</li>
-                        <li class="text-white mb-4">Exercise Angina: Work with your healthcare provider to manage and control angina symptoms during exercise.</li>
-                        <li class="text-white mb-4">Fasting Blood Sugar (FastingBS): Control blood sugar levels through diet, exercise, and, if necessary, medications as advised by your healthcare provider.</li>
                         <li class="text-white mb-4">Sex: Some risk factors may vary between genders, so ensure you are aware of any gender-specific considerations and discuss them with your healthcare provider.</li>
+                        <li class="text-white mb-4">Fasting Blood Sugar (FastingBS): Control blood sugar levels through diet, exercise, and, if necessary, medications as advised by your healthcare provider.</li>
                         <li class="text-white mb-4">Chest Pain Type: Seek medical advice to manage and treat chest pain symptoms appropriately.</li>
-                        <li class="text-white mb-4">Oldpeak: Engage in regular exercise and maintain a healthy lifestyle to improve your exercise capacity and reduce the risk associated with ST depression during exercise.</li>
-                        <li class="text-white mb-4">Resting ECG: Follow up with your healthcare provider for any abnormal electrocardiogram findings.</li>
-                        <li class="text-white mb-4">MaxHR: Engage in regular aerobic exercise to improve your maximum heart rate and cardiovascular fitness.</li>
                         <li class="text-white mb-4">Cholesterol: Adopt a heart-healthy diet, low in saturated fats and cholesterol, and consider medications if prescribed by your doctor.</li>
+                        <li class="text-white mb-4">Exercise Angina: Work with your healthcare provider to manage and control angina symptoms during exercise.</li>
+                        <li class="text-white mb-4">Oldpeak: Engage in regular exercise and maintain a healthy lifestyle to improve your exercise capacity and reduce the risk associated with ST depression during exercise.</li>
+                        <li class="text-white mb-4">MaxHR: Engage in regular aerobic exercise to improve your maximum heart rate and cardiovascular fitness.</li>
                         <li class="text-white mb-4">Resting Blood Pressure (RestingBP): Maintain a healthy blood pressure through lifestyle changes, including a balanced diet, regular exercise, and stress management.</li>
                         <li class="text-white mb-4">Age: While age is a non-modifiable factor, adopting a healthy lifestyle becomes increasingly important as you age.</li>
-                        
-                        
-                        
-                        
-                        
-                        
-                        <p class="text-white mb-4 pb-2" style="text-align: justify;">Keep in mind that a chance of below 10 means you are in good health, between 10-50 indicates the need to take action to reduce it, and above 50 strongly suggests consulting with a doctor for further evaluation. Remember, it's essential to consult with your healthcare provider before making any significant lifestyle changes or starting new medications. They can provide personalized guidance based on your individual health profile.</p>
+                        <li class="text-white mb-4">Resting ECG: Follow up with your healthcare provider for any abnormal electrocardiogram findings.</li>
+                        <p class="text-white mb-4 pb-2" style="text-align: justify;">Keep in mind that a chance of below 10 means you are in good health, between 10-50 indicates the need to take action to reduce it, and above 50 strongly suggests consulting with a doctor for further evaluation. Remember, it's essential to consult with your healthcare provider before making any significant lifestyle changes or starting new medications. They can provide personalized guidance based on your individual health profile. You can book an appointment today at our appointment page! And as bonus, in the second chart you can see how your inputs compare against individuals with and without heart failure.</p>
                         <div class="row g-4">
                             <div class="col-6">
                                 <div class="d-flex align-items-center">
