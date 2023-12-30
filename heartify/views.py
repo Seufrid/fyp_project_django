@@ -1,4 +1,6 @@
 import json
+import datetime
+from datetime import date
 from django.shortcuts import render
 from django.http import JsonResponse
 from .ml_utils import make_prediction
@@ -37,7 +39,7 @@ def contact(request):
 
             # Send email to the recipient and the user
             send_mail(
-                subject='Contact Form Submission',
+                subject='Heartify Contact Form Submission',
                 message=email_content,
                 from_email=email,
                 recipient_list=[recipient_email, email],
@@ -132,20 +134,53 @@ def selftest(request):
             'ST_Slope': 0.26  # 0: Up, 1: Flat, 2: Down
         }
 
+        # Customize the email content and recipient
+        email_content = (
+            f"Date Submitted: {date.today()}\n"
+            f"Time Submitted: {datetime.datetime.now().strftime('%I:%M %p')}\n\n"
+            f"Heartify Selftest Form Submission\n"
+            f"Name: {person_profile.name}\n"
+            f"Email: {person_profile.email}\n"
+            f"Age: {age}\n"
+            f"Sex: {sex_str}\n"
+            f"Chest Pain Type: {chest_pain_type_str}\n"
+            f"Resting BP: {resting_bp}\n"
+            f"Cholesterol: {cholesterol}\n"
+            f"Fasting BS: {fasting_bs_str}\n"
+            f"Resting ECG: {resting_ecg_str}\n"
+            f"Max HR: {max_hr}\n"
+            f"Exercise Angina: {exercise_angina_str}\n"
+            f"Oldpeak: {oldpeak}\n"
+            f"ST Slope: {st_slope_str}\n\n"
+            f"Result: {round(result * 100)}%"
+        )
+        recipient_email = 'usamaabdul11@gmail.com'
+        
+        # Send email to the recipient and the user
+        send_mail(
+            subject='Heartify Selftest Form Submission (' + str(date.today()) + ')',
+            message=email_content,
+            from_email=person_profile.email,
+            recipient_list=[recipient_email, person_profile.email],
+            fail_silently=False,
+        )
+
         # Import feature importance data from JSON file
         with open('feature_importance.json', 'r') as f:
             feature_importance_data = json.load(f)
 
         # Return a JSON response with the prediction
         return JsonResponse({
+            'status': 'success',
+            'message': 'Self-test form submitted successfully.',
             'result': result,
             'avg_positive': avg_data_positive_outcome,
             'avg_negative': avg_data_negative_outcome,
             'feature_importance': feature_importance_data
         })
     else:
-        # If not a POST request, render the self-test page
-        return render(request, "heartify/selftest.html")
+        # If not a POST request, render the self-test page and return the response data
+        return render(request, "heartify/selftest.html", {'response_data': {'status': 'error', 'message': 'Failed to submit self-test form. Please check the form and try again.'}})
 
 def appointment(request):
     if request.method == 'POST':
@@ -186,11 +221,11 @@ def appointment(request):
                 f"Time: {time}\n\n"
                 f"{problem_description}"
             )
-            recipient_email = 'heartifycontact@gmail.com'
+            recipient_email = 'usamaabdul11@gmail.com'
 
             # Send email to the recipient and the user
             send_mail(
-                subject='Appointment Form Submission',
+                subject='Heartify Appointment Form Submission',
                 message=email_content,
                 from_email=email,
                 recipient_list=[recipient_email, email],

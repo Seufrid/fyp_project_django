@@ -89,7 +89,7 @@
                     <div class="bg-light rounded p-5">
                         <p class="d-inline-block border rounded-pill py-1 px-4">Selftest</p>
                         <h1 class="mb-4">Selftest</h1>
-                        <p class="mb-4" style="text-align: justify;">Heart failure is a serious condition where the heart is unable to pump blood effectively, which can lead to various health complications. By answering the questions in this form, you will gain insights into your heart failure risk and receive a percentage change based on your responses. Remember that this self-test is not a substitute for professional medical advice, diagnosis, or treatment. If you have concerns about your heart health, consult with a healthcare provider for a comprehensive evaluation.</p>
+                        <p class="mb-4" style="text-align: justify;">Heart failure is a serious condition where the heart is unable to pump blood effectively, which can lead to various health complications. By answering the questions in this form, you will gain insights into your heart failure risk and receive a percentage change based on your responses. Remember that this self-test is not a substitute for professional medical advice, diagnosis, or treatment. If you have concerns about your heart health, consult with a healthcare provider for a comprehensive evaluation. A copy will be sent to your email!</p>
                         <form id="myForm" data-url="{% url 'selftest' %}">
                             {% csrf_token %}
                             <div class="row g-3">
@@ -203,6 +203,57 @@
         </div>
     </div>
     <!-- Selftest Form End -->
+
+    <!-- Loading Modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <p>Loading...</p>
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Loading Modal End -->
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Success</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeSuccessModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p style="color: green;">Self-test information submitted successfully!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Success Modal End -->
+
+    <!-- Error Modal -->
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeErrorModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p style="color: red;">Failed to submit self-test form. Please check the form and try again.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Error Modal End -->
 
     <!-- Progress Bar Start -->
     <div id="progressBarContainer" class="container-xxl py-5" style="display:none;">
@@ -366,6 +417,8 @@
     <script src="{% static 'heartify/lib/tempusdominus/js/moment-timezone.min.js' %}"></script>
     <script src="{% static 'heartify/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js' %}"></script>
 
+    <!-- Contact Popup Javascript -->
+    <script src="{% static 'heartify/js/selftest-popup.js' %}"></script>
     <!-- Selftest Javascript -->
     <script src="{% static 'heartify/js/selftest.js' %}"></script>
     <!-- Page Javascript -->

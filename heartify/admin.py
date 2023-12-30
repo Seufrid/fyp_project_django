@@ -6,7 +6,7 @@ from .models import Appointment, Doctor, Contact, SelfTestResult, PersonProfile
 # Register the Doctor model with the admin site
 @admin.register(Doctor)
 class DoctorAdmin(admin.ModelAdmin):
-    list_display = ('name', 'doctor_id', 'specialisation')  # Display these fields in the admin list view
+    list_display = ('doctor_id', 'name', 'email', 'age', 'gender' , 'specialisation')  # Display these fields in the admin list view
 
 # Register the Appointment model with the admin site
 @admin.register(Appointment)

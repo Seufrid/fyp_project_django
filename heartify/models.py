@@ -8,13 +8,21 @@ class PersonProfile(models.Model):
         return f"{self.name} - {self.email}"
     
     class Meta:
-        verbose_name = "User Profiles"
-        verbose_name_plural = "User Profiles"
+        verbose_name = "UserProfile"
+        verbose_name_plural = "UserProfiles"
 
 class Doctor(models.Model):
-    doctor_id = models.CharField(max_length=10)
-    name = models.CharField(max_length=200)
-    specialisation = models.CharField(max_length=200)
+    GENDER_CHOICES = [
+        ('M', 'Male'),
+        ('F', 'Female'),
+    ]
+
+    doctor_id = models.CharField(max_length=10, default='')
+    name = models.CharField(max_length=200, default='')
+    email = models.EmailField(unique=False, default='')
+    age = models.IntegerField(default=0)
+    specialisation = models.CharField(max_length=200, default='')
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
 
     def __str__(self):
         return self.name
@@ -58,5 +66,5 @@ class SelfTestResult(models.Model):
         return f"{self.person_profile.name} - Age: {self.age}, Sex: {self.sex}"
 
     class Meta:
-        verbose_name = "Self Tests"
-        verbose_name_plural = "Self Tests"
+        verbose_name = "SelfTest"
+        verbose_name_plural = "SelfTests"
