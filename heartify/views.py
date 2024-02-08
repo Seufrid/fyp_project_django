@@ -1,4 +1,5 @@
 import json
+import joblib
 import datetime
 from datetime import date
 from django.shortcuts import render
@@ -35,7 +36,7 @@ def contact(request):
 
             # Customize the email content and recipient
             email_content = f"Name: {name}\nEmail: {email}\nSubject: {subject}\n\n{message}"
-            recipient_email = 'heartifycontact@gmail.com'
+            recipient_email = 'usamaabdul11@gmail.com'
 
             # Send email to the recipient and the user
             send_mail(
@@ -165,18 +166,48 @@ def selftest(request):
             fail_silently=False,
         )
 
+        # Load your scaler and PCA
+        scaler = joblib.load(open("scaler.sav", "rb"))
+        pca = joblib.load(open("pca.sav", "rb"))
+
+        # Scale the input data
+        scaled_data = scaler.transform([[age, sex, chest_pain_type, resting_bp, cholesterol, fasting_bs, resting_ecg, max_hr, exercise_angina, oldpeak, st_slope]])
+
+        # Transform the data using PCA
+        pca_data = pca.transform(scaled_data)
+        new_point = {
+            'x': pca_data[0][0],
+            'y': pca_data[0][1]
+        }
+
+        # Import PCA class 1 data from JSON file
+        with open('pca_data_class_0.json', 'r') as f:
+            pca_data_class_0 = json.load(f)
+
+        # Import PCA class 2 data from JSON file
+        with open('pca_data_class_1.json', 'r') as f:
+            pca_data_class_1 = json.load(f)
+
+        # Import the decision boundary data from JSON file
+        with open('decision_boundary.json', 'r') as f:
+            decision_boundary = json.load(f)
+
         # Import feature importance data from JSON file
         with open('feature_importance.json', 'r') as f:
             feature_importance_data = json.load(f)
 
-        # Return a JSON response with the prediction
+        # Return a JSON response with all the data
         return JsonResponse({
             'status': 'success',
             'message': 'Self-test form submitted successfully.',
             'result': result,
             'avg_positive': avg_data_positive_outcome,
             'avg_negative': avg_data_negative_outcome,
-            'feature_importance': feature_importance_data
+            'feature_importance': feature_importance_data,
+            'new_point': new_point,
+            'pca_class_0': pca_data_class_0,
+            'pca_class_1': pca_data_class_1,
+            'decision_boundary': decision_boundary
         })
     else:
         # If not a POST request, render the self-test page and return the response data

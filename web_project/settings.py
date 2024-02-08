@@ -55,7 +55,7 @@ ROOT_URLCONF = 'web_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -124,9 +124,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email configuration for using Gmail as the email server (SMTP)
-EMAIL_BACKEND = ''
-EMAIL_HOST = ''
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = ''  # Replace with your Gmail email address
-EMAIL_HOST_PASSWORD = ''  # Generate an app-specific password for security
+# EMAIL_BACKEND = 
+# EMAIL_HOST = 
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER =  # Replace with your Gmail email address
+# EMAIL_HOST_PASSWORD =  # Generate an app-specific password for security

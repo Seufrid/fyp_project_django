@@ -1,1 +1,1 @@
-{"last_found_secrets": [{"match": "34e6e219af092fc5f2ba956c6c9c637019face7a3632acd1bfc0cce775957fe1", "name": "Django Secret Key - web_project/settings.py"}]}
+{"last_found_secrets": [{"match": "f9d7f6f1f2c950c1227810d68b15b164e2b02bbf4145bb5cc2c9d17a2b10e35c", "name": "SMTP credentials - web_project/settings.py"}]}

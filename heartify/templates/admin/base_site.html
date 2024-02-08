@@ -1,0 +1,28 @@
+{% extends "admin/base.html" %}
+
+{% block extrahead %}
+{% load static %}
+<link rel="icon" href="{% static 'heartify/img/favicon.ico' %}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+{{ block.super }}
+{% endblock %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('NEW TITLE') }}{% endblock %}
+
+{% block branding %}
+<style>
+    #site-name a {
+        font-family: 'Roboto', sans-serif;
+        font-weight: bold;
+        color: green;
+    }
+</style>
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        <i class="fa fa-heart"></i> Heartify Administration
+    </a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

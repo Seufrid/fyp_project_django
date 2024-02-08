@@ -1,60 +1,61 @@
-// Global variable to hold the chart instance
+// Global variables to hold chart instances
 let comparisonChart = null;
+let featureImportanceChart = null;
+let progressBarChart = null;
+let scatterChart = null;
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Get form, URL, and chart containers
+    // Initialize form and URL
     const form = document.querySelector('#myForm');
     const url = form.dataset.url;
 
-    // Add a submit event listener to the form
+    // Add event listener for form submission
     form.addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent the default form submission behavior
+        event.preventDefault();  // Prevent default form submission
 
-        // Get form data
+        // Fetch form data
         const formData = new FormData(this);
 
-        // Send a POST request with form data to the specified URL
+        // Post request to server
         fetch(url, {
             method: 'POST',
             body: formData,
         })
-            .then(response => response.json())
-            .then(data => {
-                // Clear the result element
-                const resultElement = document.querySelector('#result');
-                resultElement.textContent = '';
-
-                // Calculate and display the Heart Failure Chance percentage
-                const percentage = (data.result * 100).toFixed(0);
-                resultElement.textContent = `Heart Failure Chance = ${percentage}%`;
-
-                // Show the progress bar container and feature importance chart container
-                document.getElementById('progressBarContainer').style.display = 'block';
-                document.getElementById('chartContainer').style.display = 'block';
-                document.getElementById('featureImportanceChartContainer').style.display = 'block';
-
-                // Create the progress bar with the prediction percentage
-                createProgressBarChart(percentage);
-
-                // Update the comparative chart with new data
-                createComparativeChart(formData, data.avg_positive, data.avg_negative);
-
-                // Create the feature importance chart
-                createFeatureImportanceChart(data.feature_importance);
-            });
+        .then(response => response.json())
+        .then(data => {
+            displayResults(data, formData);
+        });
     });
 });
+
+function displayResults(data, formData) {
+    // Display the Heart Failure Chance percentage
+    const percentage = (data.result * 100).toFixed(0);
+    document.querySelector('#result').textContent = `Heart Failure Chance = ${percentage}%`;
+
+    // Show chart containers
+    document.getElementById('progressBarContainer').style.display = 'block';
+    document.getElementById('comparisonChartContainer').style.display = 'block';
+    document.getElementById('featureImportanceChartContainer').style.display = 'block';
+    document.getElementById('scatterChartContainer').style.display = 'block';
+
+    // Update charts with new data
+    createProgressBarChart(percentage);
+    createComparativeChart(formData, data.avg_positive, data.avg_negative);
+    createFeatureImportanceChart(data.feature_importance);
+    createScatterPlot(data.new_point, data.pca_class_0, data.pca_class_1, data.decision_boundary);
+}
 
 function createProgressBarChart(percentage) {
     const ctx = document.getElementById('progressBarChart').getContext('2d');
 
     // Destroy the old chart instance if it exists
-    if (window.progressBarChart instanceof Chart) {
-        window.progressBarChart.destroy();
+    if (progressBarChart instanceof Chart) {
+        progressBarChart.destroy();
     }
 
     // Create a new progress bar chart
-    window.progressBarChart = new Chart(ctx, {
+    progressBarChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: ['Heart Failure Risk'],
@@ -120,8 +121,10 @@ function createProgressBarChart(percentage) {
 }
 
 function createComparativeChart(userInput, avgPositive, avgNegative) {
-    // Destroy the existing chart instance if it exists
-    if (comparisonChart) {
+    const ctx = document.getElementById('myComparisonChart').getContext('2d');
+
+    // Destroy the old chart instance if it exists
+    if (comparisonChart instanceof Chart) {
         comparisonChart.destroy();
     }
 
@@ -151,7 +154,7 @@ function createComparativeChart(userInput, avgPositive, avgNegative) {
         backgroundColor: 'rgba(153, 102, 255, 0.5)',
     };
 
-    const ctx = document.getElementById('myComparisonChart').getContext('2d');
+    // Create a new comparative chart
     comparisonChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -169,32 +172,33 @@ function createComparativeChart(userInput, avgPositive, avgNegative) {
 }
 
 function createFeatureImportanceChart(featureImportanceData) {
+    const ctx = document.getElementById('featureImportanceChart').getContext('2d');
+
+    // Destroy the old chart instance if it exists
+    if (featureImportanceChart instanceof Chart) {
+        featureImportanceChart.destroy();
+    }
+
     // Transform the object into an array of [key, value] pairs and sort it by value in descending order
     const sortedData = Object.entries(featureImportanceData).sort((a, b) => b[1] - a[1]);
 
     // Split the sorted array into separate arrays for labels and data
     const labels = sortedData.map(item => item[0]);
     const dataValues = sortedData.map(item => item[1]);
-
-    // Get the context of the canvas element we want to select
-    const ctx = document.getElementById('featureImportanceChart').getContext('2d');
-
-    // Data for the chart
-    const data = {
-        labels: labels,
-        datasets: [{
-            label: 'Input Importance',
-            data: dataValues,
-            backgroundColor: 'rgba(0, 123, 255, 0.5)',
-            borderColor: 'rgba(0, 123, 255, 1)',
-            borderWidth: 1,
-        }]
-    };
-
-    // Configuration of the chart
-    const config = {
+    
+    // Create a feature importance chart
+    featureImportanceChart = new Chart(ctx, {
         type: 'bar',
-        data: data,
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Input Importance',
+                data: dataValues,
+                backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                borderColor: 'rgba(0, 123, 255, 1)',
+                borderWidth: 1,
+            }]
+        },
         options: {
             indexAxis: 'y', // Set horizontal bar chart
             scales: {
@@ -205,8 +209,57 @@ function createFeatureImportanceChart(featureImportanceData) {
             responsive: true,
             maintainAspectRatio: false,
         }
-    };
+    });
+}
 
-    // Create the chart
-    new Chart(ctx, config);
+function createScatterPlot(newPoint, pcaData0, pcaData1, decisionBoundary) {
+    const ctx = document.getElementById('scatterChart').getContext('2d');
+
+    // Destroy the old chart instance if it exists
+    if (scatterChart instanceof Chart) {
+        scatterChart.destroy();
+    }
+
+    // Prepare the data for the chart
+    var formattedData0 = pcaData0.map(function(item) {
+        return { x: item.PCA_Component_1, y: item.PCA_Component_2 };
+    });
+
+    var formattedData1 = pcaData1.map(function(item) {
+        return { x: item.PCA_Component_1, y: item.PCA_Component_2 };
+    });
+
+    // Create a scatter chart
+    scatterChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: 'Normal',
+                data: formattedData0,
+                backgroundColor: 'rgba(0, 0, 255, 0.5)'  
+            }, {
+                label: 'Heart Failure',
+                data: formattedData1,
+                backgroundColor: 'rgba(255, 0, 0, 0.5)' 
+            }, {
+                label: 'Your Data',
+                data: [newPoint],
+                backgroundColor: 'rgba(0, 255, 0, 0.5)' 
+            }, {
+                label: 'Boundary',
+                data: decisionBoundary,
+                backgroundColor: 'rgba(255, 0, 0, 0.1)', 
+                showLine: true,  
+                fill: false
+            }]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    type: 'linear',
+                    position: 'bottom'
+                }]
+            }
+        }
+    });
 }
